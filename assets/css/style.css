@@ -69,7 +69,7 @@ body, html {
     background-image: url('../img/your-background.jpg'); /* Ensure this points to your actual background image */
     background-size: cover;
     background-position: center;
-    opacity: 0.5; /* Adjust or remove opacity as desired */
+    opacity: 0.9; /* Adjust or remove opacity as desired */
     width: 100%;
     box-sizing: border-box;
 }
@@ -149,6 +149,63 @@ body, html {
     border: 3px solid white; /* Border around the picture */
     object-fit: cover; /* Ensures image fits well */
 }
+
+#experiences {
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background for better contrast */
+}
+
+.timeline {
+    position: relative;
+    margin-left: 40px; /* Gives more space for the dot */
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 20px; /* Space between items */
+    margin-bottom: 20px; /* Additional bottom margin for spacing */
+    padding-left: 30px; /* Space for the line and dot */
+    border-left: 2px solid #4fa5d8; /* Timeline line */
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -11px; /* Adjust based on the border width to center the dot */
+    top: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #4fa5d8; /* Dot color */
+    border: 2px solid #ffffff; /* Adds a white border for distinction */
+}
+
+.timeline-date {
+    font-size: 16px; /* Slightly larger font size for readability */
+    color: #666;
+    margin-bottom: 5px; /* Space between date and title */
+}
+
+h3, h4 {
+    margin: 2px 0; /* Reduced margin for a tighter layout */
+    color: #333; /* Darker text for better readability */
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+    .timeline {
+        margin-left: 20px; /* Less margin on smaller screens */
+    }
+
+    .timeline-item {
+        padding-left: 20px; /* Adjusts padding for smaller screens */
+        border-left: 2px solid #4fa5d8; /* Keeps the timeline visible */
+    }
+
+    .timeline-dot {
+        left: -11px; /* Keeps the dot aligned with the adjusted border */
+    }
+}
+
 
 @media (max-width: 768px) {
     .grid-container {
