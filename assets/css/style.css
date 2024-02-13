@@ -15,9 +15,9 @@ body, html {
 
 .grid-container {
     display: grid;
-    grid-template-columns: auto 1fr; /* Adjust this to account for the fixed sidebar width */
+    grid-template-columns: auto 1fr;
     gap: 10px;
-    padding-left: 240px; /* Adjust based on sidebar width to prevent content overlap */
+    padding-left: 240px; /* Adjust this dynamically or in a media query for mobile */
     height: 100vh;
 }
 
@@ -25,21 +25,19 @@ body, html {
     background-color: #4fa5d8;
     color: white;
     padding: 20px;
-    position: fixed; /* Add this line */
-    top: 0; /* Ensure it starts from the top */
-    left: 0; /* Align to the left side of the viewport */
-    height: 100%; /* Make it span the full height of the viewport */
-    background-color: #4fa5d8;
-    color: white;
-    padding: 20px;
-    overflow-y: auto; /* Add a scroll bar to the sidebar if content overflows */
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 1000; /* Ensure sidebar is above other content */
+    overflow-y: auto;
 }
 
 .sidebar ul {
     list-style: none;
-    margin:0;
-    margin-top: 20px;
+    margin: 0;
     padding: 0;
+    margin-top: 20px;
 }
 
 .sidebar ul li {
@@ -56,7 +54,7 @@ body, html {
     margin-bottom: 12px;
 }
 .sidebar ul li a.active {
-    background-color: #b3cde4; /* Change as needed */
+    background-color: #b3cde4;
     color: white;
     border-radius: 5px;
     padding: 10px 15px;
@@ -89,9 +87,9 @@ body, html {
     background-image: url('../img/your-background.jpg');
     background-size: cover;
     background-position: center;
-    opacity: 0.9;
     width: 100%;
     background-color: #666; /* Fallback color */
+    z-index: 1; /* Ensure it does not overlap the sidebar */
 }
 
 h1 {
@@ -328,19 +326,22 @@ button[type="submit"]:hover {
 
 @media (max-width: 768px) {
     .sidebar {
-        width: 100%; /* Full width */
-        height: auto; /* Adjust height */
-        position: static; /* Make it flow with the document */
-        padding: 10px 0; /* Reduce padding */
+        position: relative; /* or use 'static' */
+        width: 100%;
+        height: auto;
+        padding: 10px 0; /* Adjusted padding */
+        z-index: 1000; /* Maintain high z-index if still fixed */
     }
     .main-content {
         padding-top: 60px; /* Adjust based on your mobile header size */
     }
     .grid-container {
-        padding-left: 0; /* Remove padding meant for the sidebar */
+        grid-template-columns: 1fr;
+        padding-left: 0; /* No padding to the left */
     }
     .sidebar ul {
-        display: none; /* Hide sidebar items */
+        display: flex;
+        flex-direction: column; /* Stack links vertically */
     }
 
     .hamburger-menu {
@@ -350,6 +351,10 @@ button[type="submit"]:hover {
     }
     .sidebar ul li a {
         font-size: 18px; /* Adjust font size for smaller screens */
+    }
+    .main-content, #landing-page {
+        padding-top: 0; /* Adjust if necessary */
+        margin-top: 60px; /* Make space for mobile navigation */
     }
     .connect-container {
         flex-direction: column;
@@ -375,16 +380,12 @@ button[type="submit"]:hover {
     .form-group input[type="text"],
     .form-group input[type="email"],
     .form-group textarea,
-    button[type="submit"] {
-        font-size: 16px; /* Make text slightly smaller for mobile */
-    }
-
+    button[type="submit"],
+    .social-links a,
     .social-links img {
-        width: 40px; /* Adjust icon size for smaller screens */
-        height: 40px;
-    }
-    #landing-page {
-        background-position: top center; /* Example adjustment */
+        font-size: 16px; /* Adjust font size */
+        width: 30px; /* Adjust social icon width for mobile */
+        height: 30px; /* Adjust social icon height for mobile */
     }
 }
 
