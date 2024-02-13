@@ -3,24 +3,24 @@ body, html {
     padding: 0;
     width: 100%;
     height: 100%;
-    scroll-behavior: smooth; /* Enables smooth scrolling */
-    overflow-x: hidden; /* Prevents horizontal overflow */
+    scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 *, *::before, *::after {
-    box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+    box-sizing: border-box;
 }
 
 .grid-container {
     display: grid;
-    grid-template-columns: 2fr 10fr; /* Adjusts to a 3:9 ratio for sidebar and content */
+    grid-template-columns: 2fr 10fr;
     gap: 10px;
-    height: 100vh; /* Full viewport height */
+    height: 100vh;
 }
 
 .sidebar {
-    background-color: #4fa5d8; /* Custom color for the sidebar */
-    color: white; /* Text color */
+    background-color: #4fa5d8;
+    color: white;
     padding: 20px;
 }
 
@@ -31,7 +31,7 @@ body, html {
 }
 
 .sidebar ul li {
-    margin-bottom: 20px; /* Increased spacing between navigation items */
+    margin-bottom: 20px;
 }
 
 .sidebar ul li a {
@@ -40,20 +40,27 @@ body, html {
     color: white;
     text-decoration: none;
     font-weight: bold;
-    font-size: 20px; /* Increased font size for better readability */
-    margin-bottom: 12px; /* Correct spacing between navigation items */
+    font-size: 20px;
+    margin-bottom: 12px;
 }
-
-.sidebar ul li i {
-    margin-right: 12px; /* Space between icon and text */
-}
-
-.sidebar ul li a:hover {
-    background-color: #b3cde4; /* Color on hover */
+.sidebar ul li a.active {
+    background-color: #b3cde4; /* Change as needed */
     color: white;
     border-radius: 5px;
     padding: 10px 15px;
-    margin: -10px -15px; /* Corrected margins */
+    margin: -10px -15px;
+}
+
+.sidebar ul li i {
+    margin-right: 12px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #b3cde4;
+    color: white;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin: -10px -15px;
 }
 
 #landing-page {
@@ -61,159 +68,141 @@ body, html {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Adjust this as needed */
+    align-items: flex-start;
     justify-content: center;
     text-align: left;
     padding: 20px;
     color: white;
-    background-image: url('../img/your-background.jpg'); /* Ensure this points to your actual background image */
+    background-image: url('../img/your-background.jpg');
     background-size: cover;
     background-position: center;
-    opacity: 0.9; /* Adjust or remove opacity as desired */
-    width: 100%;
-    box-sizing: border-box;
-}
-
-
-#landing-page::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('../img/your-background.jpg'); /* Background image */
-    background-size: cover;
-    background-position: center;
-    opacity: 0.5; /* Opacity of the image */
-    z-index: -1; /* Ensures image is behind the content */
-}
-
-
-#landing-page div {
-    display: block; /* This should already be the default */
+    opacity: 0.9;
     width: 100%;
 }
-#landing-page h2, #landing-page h3 {
-    width: auto; /* Allows the text to take up only as much width as it needs */
-    margin: 10px 0; /* Adds a little space above and below each element */
-}
-.text-container {
-    background-color: rgba(255, 255, 255, 0.95); /* Adjust opacity for better readability */
-    color: black; /* Black text for contrast */
+
+.text-container, .detailed-text-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    color: black;
     padding: 20px;
-    margin-left: 20px; /* Adjust as needed */
-    max-width: 60%; /* Adjust as needed */
-    font-family: 'Courier New', Courier, monospace; /* Monospace font for terminal-like appearance */
-    font-size: 18px; /* Increase font size for better readability */
-    font-weight: bold; /* Make text bolder */
-    border-radius: 5px; /* Rounded corners for aesthetic */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow for depth */
-    border: 1px solid #ddd; /* Optional: Adds a subtle border */
-}
-
-.detailed-text-container {
-    background-color: rgba(255, 255, 255, 0.95);  /* Light, for readability */
-    color: #0e0d6a; /* Ensures text is easily readable */
-    padding: 20px;
-    margin-left: 20px; /* Adjust as needed */
-    max-width: 60%; /* Adjust as needed */
-    font-family: 'Courier New', Courier, monospace; /* Monospace font for terminal-like appearance */
-    font-size: 18px; /* Increase font size for better readability */
-    font-weight: bold; /* Make text bolder */
-    border-radius: 5px; /* Rounded corners for aesthetic */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow for depth */
-    border: 1px solid #ddd; /* Optional: Adds a subtle border */
-}
-
-
-.main-content {
-    /* Ensures main content takes up the remaining 9 columns */
+    margin-left: 20px;
+    max-width: 60%;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
 }
 
 .main-content section {
     margin-bottom: 50px;
     padding: 40px;
-    border-bottom: 1px solid #ccc; /* Separates sections visually */
-}
-
-.sidebar .profile-picture {
-    text-align: center;
-    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
 }
 
 .sidebar .profile-picture img {
-    width: 200px; /* Adjust as needed */
-    height: 200px; /* Adjust as needed */
-    border-radius: 50%; /* Circular profile picture */
-    border: 3px solid white; /* Border around the picture */
-    object-fit: cover; /* Ensures image fits well */
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 3px solid white;
+    object-fit: cover;
 }
 
-#experiences {
-    padding: 20px;
-    background-color: #f9f9f9; /* Light background for better contrast */
+.experiences-container {
+    display: grid;
+    grid-template-columns: 3fr 2fr 1fr;
+    gap: 20px;
 }
+
+.experience-details {
+    position: relative;
+    padding-left: 20px;
+}
+
+.tech-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.tech-stack-names {
+    margin-left: -80px; 
+}
+.tech-stack img, .tech-stack-names img {
+    width: 50px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.tech-stack img:hover, .tech-stack-names img:hover {
+    transform: scale(1.1);
+}
+
+/* Adjust the existing timeline styles to ensure each item has its own vertical line */
 
 .timeline {
     position: relative;
-    margin-left: 40px; /* Gives more space for the dot */
+    padding-left: 20px; /* Add padding to accommodate the lines on the left */
 }
 
 .timeline-item {
     position: relative;
-    padding-bottom: 20px; /* Space between items */
-    margin-bottom: 20px; /* Additional bottom margin for spacing */
-    padding-left: 30px; /* Space for the line and dot */
-    border-left: 2px solid #4fa5d8; /* Timeline line */
+    margin-bottom: 20px; /* Ensure spacing between items */
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 0; /* Adjust according to the desired line placement */
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #4fa5d8; /* Default line color */
+    z-index: 1;
+}
+
+.timeline-item.current-job::before {
+    background-color: #ffaa00; /* Highlight color for current job */
 }
 
 .timeline-dot {
-    position: absolute;
-    left: -11px; /* Adjust based on the border width to center the dot */
-    top: 0;
-    width: 12px;
-    height: 12px;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
-    background-color: #4fa5d8; /* Dot color */
-    border: 2px solid #ffffff; /* Adds a white border for distinction */
+    background-color: #4fa5d8;
+    position: absolute;
+    left: -6.5px; /* Adjust if necessary based on the line's position */
+    top: 0;
+    z-index: 2;
 }
 
-.timeline-date {
-    font-size: 16px; /* Slightly larger font size for readability */
-    color: #666;
-    margin-bottom: 5px; /* Space between date and title */
+.timeline-item.current-job .timeline-dot {
+    background-color: #ffaa00;
+}
+.timeline-content {
+    padding-left: 20px; /* Adjust this value as needed to prevent overlap */
 }
 
-h3, h4 {
-    margin: 2px 0; /* Reduced margin for a tighter layout */
-    color: #333; /* Darker text for better readability */
-}
-
-/* Adjustments for smaller screens */
 @media (max-width: 768px) {
     .timeline {
-        margin-left: 20px; /* Less margin on smaller screens */
+        padding-left: 10px; /* Adjust padding for smaller screens */
     }
 
-    .timeline-item {
-        padding-left: 20px; /* Adjusts padding for smaller screens */
-        border-left: 2px solid #4fa5d8; /* Keeps the timeline visible */
-    }
-
-    .timeline-dot {
-        left: -11px; /* Keeps the dot aligned with the adjusted border */
+    .timeline-item::before {
+        left: 0; /* Adjust line placement for consistency */
     }
 }
 
 
 @media (max-width: 768px) {
     .grid-container {
-        grid-template-columns: 1fr; /* Allows the sidebar to stack above the content on smaller screens */
+        grid-template-columns: 1fr;
     }
 
-    .sidebar, .main-content {
-        grid-column: 1 / -1; /* Ensures they take up the full width available */
+    .sidebar, .main-content, .experiences-container {
+        grid-column: 1 / -1;
+    }
+
+    .experiences-container {
+        grid-template-columns: 1fr;
     }
 }
-
