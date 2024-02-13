@@ -11,10 +11,13 @@ body, html {
     box-sizing: border-box;
 }
 
+
+
 .grid-container {
     display: grid;
-    grid-template-columns: 2fr 10fr;
+    grid-template-columns: auto 1fr; /* Adjust this to account for the fixed sidebar width */
     gap: 10px;
+    padding-left: 240px; /* Adjust based on sidebar width to prevent content overlap */
     height: 100vh;
 }
 
@@ -22,11 +25,20 @@ body, html {
     background-color: #4fa5d8;
     color: white;
     padding: 20px;
+    position: fixed; /* Add this line */
+    top: 0; /* Ensure it starts from the top */
+    left: 0; /* Align to the left side of the viewport */
+    height: 100%; /* Make it span the full height of the viewport */
+    background-color: #4fa5d8;
+    color: white;
+    padding: 20px;
+    overflow-y: auto; /* Add a scroll bar to the sidebar if content overflows */
 }
 
 .sidebar ul {
     list-style: none;
-    margin: 0;
+    margin:0;
+    margin-top: 20px;
     padding: 0;
 }
 
@@ -63,6 +75,7 @@ body, html {
     margin: -10px -15px;
 }
 
+
 #landing-page {
     position: relative;
     min-height: 100vh;
@@ -78,6 +91,26 @@ body, html {
     background-position: center;
     opacity: 0.9;
     width: 100%;
+}
+
+h1 {
+    position: relative;
+    padding-bottom: 10px; /* Adjust space below the text */
+    margin-bottom: 20px; /* Space after the bar */
+    font-size: 2em; /* Adjust font size as needed */
+    font-weight: bold; /* Make the title bold */
+    text-transform: uppercase; /* Optional: Capitalize titles for more emphasis */
+    color: #333; /* Title color */
+}
+
+h1::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0; /* Align with the bottom of the text */
+    height: 3px; /* Thickness of the bar */
+    width: 50%; /* Width of the bar, adjust as needed */
+    background-color: #4fa5d8; /* Color of the bar */
 }
 
 .text-container, .detailed-text-container {
@@ -122,7 +155,7 @@ body, html {
 .tech-stack {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
 }
 .tech-stack-names {
     margin-left: -80px; 
