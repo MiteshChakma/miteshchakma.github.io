@@ -6,6 +6,7 @@
     <title>Mitesh Chakma</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <script src="assets/js/script.js"></script>
 </head>
@@ -18,6 +19,7 @@
             <ul>
                 <li><a href="#landing-page"><i class="fas fa-home"></i> Welcome</a></li>
                 <li><a href="#experiences"><i class="fas fa-user-tie"></i> Experiences & Skills</a></li>
+                <li><a href="#publications"><i class="fas fa-user-tie"></i> Publications</a></li>
                 <li><a href="#projects"><i class="fas fa-briefcase"></i> Projects</a></li>
                 <li><a href="#resume-page"><i class="fas fa-file"></i> Resume</a></li>
                 <li><a href="#connect"><i class="fas fa-envelope"></i> Connect Me</a></li>
@@ -95,7 +97,23 @@
                         <p>Continuous Integration/Continuous Deployment (CI/CD)</p>
                     </div>
                 </div>
-            </section>            
+            </section>
+            <section id="publications">
+                <h1>Publications</h1>
+                <div class="publication">
+                    <h2>Determining Land Use and Land Cover Changes and Predicting the Growth of Dhaka, Bangladesh Using Remote Sensing and GIS Techniques</h2>
+                    <p>IOP Science · Mar 4, 2019</p>
+                    <a href="https://iopscience.iop.org/article/10.1088/1742-6596/1152/1/012023" target="_blank">Read More</a>
+                    <p>Developing countries are experiencing a rapid growth in urbanization in recent decades. This study evaluates and observes various changes in the urban area of Dhaka, Bangladesh, using Landsat images and predicts future urban growth, vegetation, and water index for the year 2020.</p>
+                </div>
+                <div class="publication">
+                    <h2>Change Detection of the Sundarban Part of Bangladesh Using Remote Sensing and GIS Techniques with Machine Learning Algorithms</h2>
+                    <p>IAC · Oct 4, 2018</p>
+                    <a href="https://iafastro.directory/iac/paper/id/47723/summary/" target="_blank">Read More</a>
+                    <p>This study examines land cover changes in the Sundarbans, aiming to quantify changes and present the status of mangrove forests using Landsat data. It provides insights into deforestation rates and the impact of various factors on the Sundarbans' reserve forest area.</p>
+                </div>
+            </section>
+                      
             <section id="projects">
                 <h1>Projects</h1>
             </section>
@@ -103,9 +121,44 @@
                 <h1>Resume</h1>
                 <embed src="https://drive.google.com/file/d/1CgjUWcajFBz0Qkn3KJrkBV_wJo-MUgmN/preview" type="application/pdf" width="100%" height="900px">
             </section>  
+
             <section id="connect">
-                <h1>Connect Me!</h1>
+                <h1>Contact Me</h1>
+                <div class="connect-container">
+                    <div class="social-links-box">
+                        <p>Feel free to reach out to me via email or connect with me through my social profiles:</p>
+                        <div class="social-links">
+                            <a href="https://github.com/MiteshChakma/" target="_blank" title="GitHub">
+                                <img src="assets/img/github.png" alt="GitHub"> GitHub
+                            </a>
+                            <a href="https://linkedin.com/in/mitesh-chakma/" target="_blank" title="LinkedIn">
+                                <img src="assets/img/linkedin.png" alt="LinkedIn"> LinkedIn
+                            </a>
+                        </div>
+                        <p>Thank you for choosing to leave a connect request or your valuable message.</p>
+                    </div>
+                    
+                    <div class="contact-form-box">
+                        <form action="your-server-endpoint" method="POST">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" rows="4" required></textarea>
+                            </div>
+                            <button type="submit">Send Message</button>
+                        </form>
+                    </div>
+                </div>
             </section>
+            
+            
         </main>
     </div>
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>

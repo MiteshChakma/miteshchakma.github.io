@@ -215,18 +215,134 @@ h1::after {
     padding-left: 20px; /* Adjust this value as needed to prevent overlap */
 }
 
-@media (max-width: 768px) {
-    .timeline {
-        padding-left: 10px; /* Adjust padding for smaller screens */
-    }
 
-    .timeline-item::before {
-        left: 0; /* Adjust line placement for consistency */
-    }
+.publication {
+    background-color: #f9f9f9; /* Light background for contrast */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Soft shadow for depth */
+}
+
+.publication h2 {
+    color: #333; /* Darker text for titles */
+    margin-top: 0;
+}
+
+.publication p {
+    color: #666; /* Lighter text for content */
+    line-height: 1.6; /* Improved readability */
+}
+
+.publication a {
+    display: inline-block;
+    background-color: #4fa5d8; /* Matching your sidebar color */
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none; /* Remove underline */
+    margin-top: 10px;
+}
+
+.publication a:hover {
+    background-color: #3e8cb6; /* Slightly darker on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.connect-container {
+    display: flex;
+    gap: 20px; /* Adjust space between columns */
+}
+.social-links-box, .contact-form-box {
+    flex: 1;
+}
+
+.social-links-box {
+    padding: 20px;
+    font-size: 20px; /* Increase font size for the text in social links box */
+}
+
+.social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact-form-box {
+    padding: 20px;
+    background-color: #f0f0f0; /* Slightly different color for the form background */
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow for distinction */
+    font-size: 20px; /* Increase font size for form labels and inputs */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ffffff; /* Ensures inputs stand out slightly from the form background */
+}
+
+button[type="submit"] {
+    background-color: #3498db; /* Matches your existing button style */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px; /* Increase font size for the submit button */
+}
+
+button[type="submit"]:hover {
+    background-color: #1abc9c; /* Hover effect */
+}
+
+.social-links a {
+    display: flex;
+    align-items: center;
+    color: #3498db; /* Example: blue color for links */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.social-links img {
+    width: 60px; /* Adjusted icon size for a balanced design */
+    height: 60px; /* Adjusted icon size for a balanced design */
+    margin-right: 8px; /* Space between icon and text */
 }
 
 
+
 @media (max-width: 768px) {
+    .sidebar {
+        position: static; /* Or keep fixed but toggle visibility */
+        width: 100%; /* Full width */
+        height: auto; /* Adjust height */
+        padding: 10px 0; /* Adjust padding */
+    }
+    
+    .grid-container {
+        padding-left: 0; /* Remove padding meant for the sidebar */
+    }
+
+    .sidebar ul li a {
+        font-size: 18px; /* Adjust font size for smaller screens */
+    }
+    .connect-container {
+        flex-direction: column;
+    }
     .grid-container {
         grid-template-columns: 1fr;
     }
@@ -238,4 +354,23 @@ h1::after {
     .experiences-container {
         grid-template-columns: 1fr;
     }
+    .timeline {
+        padding-left: 10px; /* Adjust padding for smaller screens */
+    }
+
+    .timeline-item::before {
+        left: 0; /* Adjust line placement for consistency */
+    }
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group textarea,
+    button[type="submit"] {
+        font-size: 16px; /* Make text slightly smaller for mobile */
+    }
+
+    .social-links img {
+        width: 40px; /* Adjust icon size for smaller screens */
+        height: 40px;
+    }
 }
+
