@@ -1,0 +1,162 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    scroll-behavior: smooth; /* Enables smooth scrolling */
+    overflow-x: hidden; /* Prevents horizontal overflow */
+}
+
+*, *::before, *::after {
+    box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 2fr 10fr; /* Adjusts to a 3:9 ratio for sidebar and content */
+    gap: 10px;
+    height: 100vh; /* Full viewport height */
+}
+
+.sidebar {
+    background-color: #4fa5d8; /* Custom color for the sidebar */
+    color: white; /* Text color */
+    padding: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 20px; /* Increased spacing between navigation items */
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px; /* Increased font size for better readability */
+    margin-bottom: 12px; /* Correct spacing between navigation items */
+}
+
+.sidebar ul li i {
+    margin-right: 12px; /* Space between icon and text */
+}
+
+.sidebar ul li a:hover {
+    background-color: #b3cde4; /* Color on hover */
+    color: white;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin: -10px -15px; /* Corrected margins */
+}
+
+#landing-page {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Adjust this as needed */
+    justify-content: center;
+    text-align: left;
+    padding: 20px;
+    color: white;
+    background-image: url('../img/your-background.jpg'); /* Ensure this points to your actual background image */
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5; /* Adjust or remove opacity as desired */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+#landing-page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../img/your-background.jpg'); /* Background image */
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5; /* Opacity of the image */
+    z-index: -1; /* Ensures image is behind the content */
+}
+
+
+#landing-page div {
+    display: block; /* This should already be the default */
+    width: 100%;
+}
+#landing-page h2, #landing-page h3 {
+    width: auto; /* Allows the text to take up only as much width as it needs */
+    margin: 10px 0; /* Adds a little space above and below each element */
+}
+.text-container {
+    background-color: rgba(255, 255, 255, 0.95); /* Adjust opacity for better readability */
+    color: black; /* Black text for contrast */
+    padding: 20px;
+    margin-left: 20px; /* Adjust as needed */
+    max-width: 60%; /* Adjust as needed */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for terminal-like appearance */
+    font-size: 18px; /* Increase font size for better readability */
+    font-weight: bold; /* Make text bolder */
+    border-radius: 5px; /* Rounded corners for aesthetic */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow for depth */
+    border: 1px solid #ddd; /* Optional: Adds a subtle border */
+}
+
+.detailed-text-container {
+    background-color: rgba(255, 255, 255, 0.95);  /* Light, for readability */
+    color: #0e0d6a; /* Ensures text is easily readable */
+    padding: 20px;
+    margin-left: 20px; /* Adjust as needed */
+    max-width: 60%; /* Adjust as needed */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for terminal-like appearance */
+    font-size: 18px; /* Increase font size for better readability */
+    font-weight: bold; /* Make text bolder */
+    border-radius: 5px; /* Rounded corners for aesthetic */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow for depth */
+    border: 1px solid #ddd; /* Optional: Adds a subtle border */
+}
+
+
+.main-content {
+    /* Ensures main content takes up the remaining 9 columns */
+}
+
+.main-content section {
+    margin-bottom: 50px;
+    padding: 40px;
+    border-bottom: 1px solid #ccc; /* Separates sections visually */
+}
+
+.sidebar .profile-picture {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar .profile-picture img {
+    width: 200px; /* Adjust as needed */
+    height: 200px; /* Adjust as needed */
+    border-radius: 50%; /* Circular profile picture */
+    border: 3px solid white; /* Border around the picture */
+    object-fit: cover; /* Ensures image fits well */
+}
+
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr; /* Allows the sidebar to stack above the content on smaller screens */
+    }
+
+    .sidebar, .main-content {
+        grid-column: 1 / -1; /* Ensures they take up the full width available */
+    }
+}
+
