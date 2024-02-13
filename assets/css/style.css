@@ -91,6 +91,7 @@ body, html {
     background-position: center;
     opacity: 0.9;
     width: 100%;
+    background-color: #666; /* Fallback color */
 }
 
 h1 {
@@ -327,16 +328,26 @@ button[type="submit"]:hover {
 
 @media (max-width: 768px) {
     .sidebar {
-        position: static; /* Or keep fixed but toggle visibility */
         width: 100%; /* Full width */
         height: auto; /* Adjust height */
-        padding: 10px 0; /* Adjust padding */
+        position: static; /* Make it flow with the document */
+        padding: 10px 0; /* Reduce padding */
     }
-    
+    .main-content {
+        padding-top: 60px; /* Adjust based on your mobile header size */
+    }
     .grid-container {
         padding-left: 0; /* Remove padding meant for the sidebar */
     }
+    .sidebar ul {
+        display: none; /* Hide sidebar items */
+    }
 
+    .hamburger-menu {
+        display: block; /* Show hamburger menu icon */
+        cursor: pointer;
+        /* Style your hamburger icon */
+    }
     .sidebar ul li a {
         font-size: 18px; /* Adjust font size for smaller screens */
     }
@@ -371,6 +382,9 @@ button[type="submit"]:hover {
     .social-links img {
         width: 40px; /* Adjust icon size for smaller screens */
         height: 40px;
+    }
+    #landing-page {
+        background-position: top center; /* Example adjustment */
     }
 }
 
