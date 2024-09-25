@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize typed.js functionality
     new Typed('#typed-text', {
-        strings: ["Python Developer @ Turing", "Data Scientist"],
+        strings: ["AI Trainer @ Turing", "Data Scientist"],
         typeSpeed: 110,
         backSpeed: 50,
         loop: true,
