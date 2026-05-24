@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ETL pipelines">
+  <rect width="64" height="64" rx="14" fill="#eff6ff"/>
+  <circle cx="17" cy="32" r="7" fill="#3b82f6"/>
+  <circle cx="47" cy="18" r="7" fill="#0d9488"/>
+  <circle cx="47" cy="46" r="7" fill="#6366f1"/>
+  <path d="M24 31h10c6 0 6-13 13-13M24 33h10c6 0 6 13 13 13" fill="none" stroke="#334155" stroke-width="3" stroke-linecap="round"/>
+</svg>

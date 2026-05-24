@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="OpenAI API">
+  <rect width="64" height="64" rx="14" fill="#f8fafc"/>
+  <path d="M32 12 45 19v15L32 42 19 34V19l13-7Z" fill="none" stroke="#111827" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M32 12v15l13 7M19 19l13 8v15" fill="none" stroke="#0d9488" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="32" cy="32" r="4" fill="#111827"/>
+</svg>

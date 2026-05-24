@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#0c1222">
+    <title>Portfolio Visitors | Mitesh Chakma</title>
+    <style>
+        :root {
+            --bg: #f4f6fb;
+            --panel: rgba(255, 255, 255, 0.94);
+            --border: rgba(20, 28, 46, 0.09);
+            --text: #141c2e;
+            --muted: #667085;
+            --teal: #0d9488;
+            --blue: #3b82f6;
+            --indigo: #6366f1;
+            --shadow: 0 10px 32px rgba(20, 28, 46, 0.1);
+            --radius: 16px;
+            --font: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: var(--font);
+            color: var(--text);
+            background:
+                radial-gradient(ellipse 70% 45% at 0% 0%, rgba(99, 102, 241, 0.12), transparent 50%),
+                radial-gradient(ellipse 50% 35% at 100% 10%, rgba(20, 184, 166, 0.15), transparent 45%),
+                linear-gradient(180deg, #fafbff 0%, var(--bg) 100%);
+        }
+
+        a {
+            color: var(--teal);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .page {
+            width: min(1120px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 36px 0;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: clamp(1.65rem, 3vw, 2.5rem);
+            line-height: 1.1;
+        }
+
+        .brand p {
+            margin: 8px 0 0;
+            color: var(--muted);
+            max-width: 680px;
+        }
+
+        .home-link {
+            display: inline-flex;
+            align-items: center;
+            min-height: 42px;
+            padding: 0 16px;
+            border: 1px solid #101827;
+            border-radius: 12px;
+            background: #101827;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(16, 24, 39, 0.22);
+            white-space: nowrap;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .metric {
+            padding: 18px;
+        }
+
+        .metric span {
+            display: block;
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .metric strong {
+            display: block;
+            margin-top: 8px;
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            gap: 18px;
+        }
+
+        .chart-panel {
+            padding: 20px;
+        }
+
+        .chart-panel h2,
+        .table-panel h2 {
+            margin: 0 0 4px;
+            font-size: 1rem;
+        }
+
+        .chart-panel p,
+        .table-panel p {
+            margin: 0 0 18px;
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .chart-wrap {
+            min-height: 300px;
+        }
+
+        canvas {
+            width: 100%;
+            height: 300px;
+            display: block;
+        }
+
+        .table-panel {
+            padding: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin: 0 0 18px;
+        }
+
+        .tab {
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--muted);
+            cursor: pointer;
+            font: inherit;
+            font-size: 0.82rem;
+            font-weight: 800;
+            padding: 8px 12px;
+        }
+
+        .tab.is-active {
+            background: #101827;
+            border-color: #101827;
+            color: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th,
+        td {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+        }
+
+        th {
+            color: var(--muted);
+            font-size: 0.75rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        td:last-child,
+        th:last-child {
+            text-align: right;
+            font-weight: 800;
+        }
+
+        .note {
+            margin-top: 18px;
+            padding: 14px 16px;
+            color: var(--muted);
+            font-size: 0.86rem;
+        }
+
+        @media (max-width: 850px) {
+            .topbar,
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 540px) {
+            .page {
+                width: min(100% - 22px, 1120px);
+                padding: 22px 0;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <header class="topbar">
+            <div class="brand">
+                <h1>Visitor dashboard</h1>
+                <p>Static GitHub Pages dashboard for portfolio visit activity by day, week, and month.</p>
+            </div>
+            <a class="home-link" href="../">Back to portfolio</a>
+        </header>
+
+        <section class="summary-grid" aria-label="Visitor summary">
+            <article class="metric panel">
+                <span>Total recorded</span>
+                <strong id="metric-total">0</strong>
+            </article>
+            <article class="metric panel">
+                <span>This month</span>
+                <strong id="metric-month">0</strong>
+            </article>
+            <article class="metric panel">
+                <span>This week</span>
+                <strong id="metric-week">0</strong>
+            </article>
+            <article class="metric panel">
+                <span>Today</span>
+                <strong id="metric-today">0</strong>
+            </article>
+        </section>
+
+        <section class="dashboard-grid">
+            <article class="chart-panel panel">
+                <div class="tabs" role="tablist" aria-label="Chart range">
+                    <button class="tab is-active" type="button" data-range="day">Daily</button>
+                    <button class="tab" type="button" data-range="week">Weekly</button>
+                    <button class="tab" type="button" data-range="month">Monthly</button>
+                </div>
+                <h2 id="chart-title">Daily visits</h2>
+                <p id="chart-subtitle">Last 14 days</p>
+                <div class="chart-wrap">
+                    <canvas id="visitor-chart" width="900" height="360" aria-label="Visitor chart"></canvas>
+                </div>
+            </article>
+
+            <article class="table-panel panel">
+                <h2>Breakdown</h2>
+                <p id="table-subtitle">Daily visitor counts</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Period</th>
+                            <th>Visits</th>
+                        </tr>
+                    </thead>
+                    <tbody id="visitor-table"></tbody>
+                </table>
+            </article>
+        </section>
+
+        <p class="note panel">
+            This page is ready for GitHub Pages at <strong>/visitors/</strong>. It uses a static JavaScript dictionary for daily, weekly, and monthly visitor numbers, so no database or npm setup is required.
+        </p>
+    </main>
+
+    <script>
+        const visitorData = {
+            day: [
+                { label: "2026-05-11", value: 0 },
+                { label: "2026-05-12", value: 0 },
+                { label: "2026-05-13", value: 0 },
+                { label: "2026-05-14", value: 0 },
+                { label: "2026-05-15", value: 0 },
+                { label: "2026-05-16", value: 0 },
+                { label: "2026-05-17", value: 0 },
+                { label: "2026-05-18", value: 0 },
+                { label: "2026-05-19", value: 0 },
+                { label: "2026-05-20", value: 0 },
+                { label: "2026-05-21", value: 0 },
+                { label: "2026-05-22", value: 0 },
+                { label: "2026-05-23", value: 0 },
+                { label: "2026-05-24", value: 0 }
+            ],
+            week: [
+                { label: "2026-W10", value: 0 },
+                { label: "2026-W11", value: 0 },
+                { label: "2026-W12", value: 0 },
+                { label: "2026-W13", value: 0 },
+                { label: "2026-W14", value: 0 },
+                { label: "2026-W15", value: 0 },
+                { label: "2026-W16", value: 0 },
+                { label: "2026-W17", value: 0 }
+            ],
+            month: [
+                { label: "2025-06", value: 0 },
+                { label: "2025-07", value: 0 },
+                { label: "2025-08", value: 0 },
+                { label: "2025-09", value: 0 },
+                { label: "2025-10", value: 0 },
+                { label: "2025-11", value: 0 },
+                { label: "2025-12", value: 0 },
+                { label: "2026-01", value: 0 },
+                { label: "2026-02", value: 0 },
+                { label: "2026-03", value: 0 },
+                { label: "2026-04", value: 0 },
+                { label: "2026-05", value: 0 }
+            ]
+        };
+
+        const ranges = {
+            day: { title: "Daily visits", subtitle: "Static daily visitor data" },
+            week: { title: "Weekly visits", subtitle: "Static weekly visitor data" },
+            month: { title: "Monthly visits", subtitle: "Static monthly visitor data" }
+        };
+
+        function getSeries(range) {
+            return visitorData[range].map((item) => ({
+                label: item.label,
+                value: Number(item.value) || 0
+            }));
+        }
+
+        function drawChart(series) {
+            const canvas = document.getElementById("visitor-chart");
+            const ctx = canvas.getContext("2d");
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = { top: 24, right: 18, bottom: 54, left: 44 };
+            const chartW = width - padding.left - padding.right;
+            const chartH = height - padding.top - padding.bottom;
+            const max = Math.max(1, ...series.map((item) => item.value));
+            const barW = chartW / series.length;
+
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.strokeStyle = "rgba(20, 28, 46, 0.09)";
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 4; i += 1) {
+                const y = padding.top + (chartH / 4) * i;
+                ctx.beginPath();
+                ctx.moveTo(padding.left, y);
+                ctx.lineTo(width - padding.right, y);
+                ctx.stroke();
+            }
+
+            series.forEach((item, index) => {
+                const x = padding.left + (index * barW) + 6;
+                const h = (item.value / max) * chartH;
+                const y = padding.top + chartH - h;
+                const gradient = ctx.createLinearGradient(0, y, 0, padding.top + chartH);
+                gradient.addColorStop(0, "#0d9488");
+                gradient.addColorStop(1, "#6366f1");
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, y, Math.max(10, barW - 12), h || 3);
+
+                ctx.fillStyle = "#667085";
+                ctx.font = "12px system-ui, sans-serif";
+                ctx.textAlign = "center";
+                const label = item.label.length > 7 ? item.label.slice(5) : item.label;
+                ctx.fillText(label, x + Math.max(10, barW - 12) / 2, height - 22);
+            });
+
+            ctx.fillStyle = "#141c2e";
+            ctx.font = "700 13px system-ui, sans-serif";
+            ctx.textAlign = "left";
+            ctx.fillText(String(max), 8, padding.top + 6);
+            ctx.fillText("0", 18, padding.top + chartH + 4);
+        }
+
+        function renderTable(series) {
+            const table = document.getElementById("visitor-table");
+            table.innerHTML = series.slice().reverse().map((item) => (
+                `<tr><td>${item.label}</td><td>${item.value}</td></tr>`
+            )).join("");
+        }
+
+        function updateMetrics() {
+            const days = visitorData.day;
+            const weeks = visitorData.week;
+            const months = visitorData.month;
+            const total = months.reduce((sum, item) => sum + (Number(item.value) || 0), 0);
+            document.getElementById("metric-total").textContent = total;
+            document.getElementById("metric-today").textContent = days.at(-1)?.value || 0;
+            document.getElementById("metric-week").textContent = weeks.at(-1)?.value || 0;
+            document.getElementById("metric-month").textContent = months.at(-1)?.value || 0;
+        }
+
+        function render(range) {
+            const series = getSeries(range);
+            document.getElementById("chart-title").textContent = ranges[range].title;
+            document.getElementById("chart-subtitle").textContent = ranges[range].subtitle;
+            document.getElementById("table-subtitle").textContent = `${ranges[range].title} breakdown`;
+            drawChart(series);
+            renderTable(series);
+        }
+
+        updateMetrics();
+        render("day");
+
+        document.querySelectorAll(".tab").forEach((button) => {
+            button.addEventListener("click", () => {
+                document.querySelectorAll(".tab").forEach((tab) => tab.classList.remove("is-active"));
+                button.classList.add("is-active");
+                render(button.dataset.range);
+            });
+        });
+
+        window.addEventListener("resize", () => {
+            const active = document.querySelector(".tab.is-active")?.dataset.range || "day";
+            render(active);
+        });
+    </script>
+</body>
+</html>
