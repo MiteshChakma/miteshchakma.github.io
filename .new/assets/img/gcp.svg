@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Google Cloud Platform">
-  <rect width="64" height="64" rx="14" fill="#eff6ff"/>
-  <path d="M25 43h20a10 10 0 0 0 0-20 15 15 0 0 0-28 6 8 8 0 0 0 8 14Z" fill="#fff" stroke="#2563eb" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M19 39c4 4 8 4 12 4" stroke="#16a34a" stroke-width="4" stroke-linecap="round"/>
-  <path d="M43 23c-3-5-8-8-14-7" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
-</svg>

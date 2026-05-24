@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="LLM evaluation">
-  <rect width="64" height="64" rx="14" fill="#f5f3ff"/>
-  <path d="M17 18h30a5 5 0 0 1 5 5v13a5 5 0 0 1-5 5H32l-10 8v-8h-5a5 5 0 0 1-5-5V23a5 5 0 0 1 5-5Z" fill="#8b5cf6"/>
-  <path d="M23 29h18M23 36h10" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-  <path d="m40 45 4 4 8-10" fill="none" stroke="#10b981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>

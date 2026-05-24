@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AWS Bedrock">
-  <rect width="64" height="64" rx="14" fill="#fff7ed"/>
-  <path d="M17 43h30M21 35h22M25 27h14M29 19h6" stroke="#f59e0b" stroke-width="6" stroke-linecap="round"/>
-  <text x="32" y="54" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#7c2d12">Bedrock</text>
-</svg>
