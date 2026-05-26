@@ -1,7 +1,7 @@
 ﻿/**
  * GitHub projects for portfolio.
  * GitHub Pages: reads assets/data/github-repos.json (built on each push via Actions).
- * Local preview: falls back to live API if JSON is empty and allowLiveFetch is true.
+ * GitHub Pages: prefers static curated projects and avoids live API calls by default.
  */
 function getGithubConfig() {
     return window.PORTFOLIO_CONFIG?.github ?? {
@@ -11,7 +11,7 @@ function getGithubConfig() {
         excludeRepos: ["MiteshChakma"],
         maxDisplay: 24,
         preferStaticRepos: true,
-        allowLiveFetch: true,
+        allowLiveFetch: false,
         staticReposPath: "assets/data/github-repos.json",
     };
 }

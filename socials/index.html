@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Social links for Mitesh Chakma: LinkedIn, GitHub, and email.">
+    <meta name="theme-color" content="#0c1222">
+    <title>Mitesh Chakma | Social Links</title>
+    <style>
+        :root {
+            --bg: #070b16;
+            --panel: rgba(255, 255, 255, 0.08);
+            --panel-strong: rgba(255, 255, 255, 0.14);
+            --border: rgba(255, 255, 255, 0.16);
+            --text: #eef4ff;
+            --muted: #9aa8c2;
+            --teal: #2dd4bf;
+            --blue: #60a5fa;
+            --indigo: #818cf8;
+            --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+            --radius: 22px;
+            --font: "Inter", "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { min-height: 100%; }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: var(--font);
+            color: var(--text);
+            background:
+                radial-gradient(circle at 18% 12%, rgba(45, 212, 191, 0.22), transparent 30%),
+                radial-gradient(circle at 84% 18%, rgba(129, 140, 248, 0.24), transparent 32%),
+                radial-gradient(circle at 55% 88%, rgba(96, 165, 250, 0.15), transparent 34%),
+                linear-gradient(145deg, #070b16 0%, #0c1222 52%, #101827 100%);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent 82%);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page {
+            position: relative;
+            width: min(1060px, calc(100% - 32px));
+            min-height: 100vh;
+            margin: 0 auto;
+            display: grid;
+            align-items: center;
+            padding: 42px 0;
+        }
+
+        .shell {
+            display: grid;
+            grid-template-columns: minmax(0, 1.04fr) minmax(300px, 0.72fr);
+            gap: 24px;
+            align-items: stretch;
+        }
+
+        .hero,
+        .qr-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.055));
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(20px);
+        }
+
+        .hero {
+            padding: clamp(24px, 5vw, 46px);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            min-height: 30px;
+            padding: 0 12px;
+            border: 1px solid rgba(45, 212, 191, 0.34);
+            border-radius: 999px;
+            color: var(--teal);
+            background: rgba(45, 212, 191, 0.08);
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 22px 0 12px;
+            font-size: clamp(2.35rem, 7vw, 5rem);
+            line-height: 0.95;
+            letter-spacing: 0;
+        }
+
+        .lead {
+            max-width: 660px;
+            margin: 0 0 28px;
+            color: var(--muted);
+            font-size: clamp(1rem, 2vw, 1.18rem);
+            line-height: 1.75;
+        }
+
+        .links {
+            display: grid;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .social-link {
+            display: grid;
+            grid-template-columns: 52px minmax(0, 1fr) auto;
+            gap: 14px;
+            align-items: center;
+            min-height: 76px;
+            padding: 13px 15px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.075);
+            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+        }
+
+        .social-link:hover,
+        .social-link:focus-visible {
+            outline: none;
+            transform: translateY(-2px);
+            border-color: rgba(45, 212, 191, 0.56);
+            background: var(--panel-strong);
+        }
+
+        .icon {
+            width: 52px;
+            height: 52px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #fff;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22), 0 10px 28px rgba(0, 0, 0, 0.22);
+            overflow: hidden;
+        }
+
+        .icon svg {
+            width: 24px;
+            height: 24px;
+            display: block;
+            fill: currentColor;
+            flex: 0 0 auto;
+        }
+
+        .icon-linkedin { background: linear-gradient(135deg, #0a66c2, #3b82f6); }
+        .icon-github { background: linear-gradient(135deg, #24292f, #0f172a); }
+        .icon-email { background: linear-gradient(135deg, #ea4335, #f97316); }
+
+        .icon-linkedin svg { width: 22px; height: 22px; transform: translateY(1px); }
+        .icon-github svg { width: 27px; height: 27px; transform: translateY(1px); }
+        .icon-email svg { width: 25px; height: 25px; transform: translateY(1px); }
+
+        .social-link strong {
+            display: block;
+            font-size: 1rem;
+        }
+
+        .social-link span {
+            display: block;
+            color: var(--muted);
+            font-size: 0.88rem;
+            overflow-wrap: anywhere;
+        }
+
+        .social-link .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        .arrow {
+            color: var(--teal);
+            font-size: 1.35rem;
+            font-weight: 900;
+        }
+
+        .qr-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 22px;
+        }
+
+        .qr-header h2 {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        .qr-header p {
+            margin: 7px 0 0;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .qr-frame {
+            padding: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 22px;
+            background: #fff;
+        }
+
+        .qr-frame img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1 / 1.18;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        .meta {
+            display: grid;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .home {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            margin-top: 22px;
+            padding: 0 16px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+            font-weight: 800;
+        }
+
+        @media (max-width: 820px) {
+            .page {
+                align-items: start;
+                padding: 22px 0;
+            }
+
+            .shell {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .page {
+                width: min(100% - 22px, 1060px);
+            }
+
+            .hero,
+            .qr-card {
+                border-radius: 18px;
+            }
+
+            .social-link {
+                grid-template-columns: 52px minmax(0, 1fr);
+            }
+
+            .arrow {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section class="shell" aria-label="Mitesh Chakma social links">
+            <div class="hero">
+                <span class="eyebrow">Connect with me</span>
+                <h1>Mitesh Chakma</h1>
+                <p class="lead">Data engineering, backend systems, and AI workflow experience. Use the links below to connect, review my work, or send a direct message.</p>
+
+                <div class="links">
+                    <a class="social-link" href="https://www.linkedin.com/in/mitesh-chakma/" target="_blank" rel="noopener noreferrer">
+                        <span class="icon icon-linkedin" aria-hidden="true">
+                            <svg viewBox="0 0 16 16" focusable="false">
+                                <path d="M0 1.15C0 .51.53 0 1.18 0h13.64C15.47 0 16 .51 16 1.15v13.7c0 .64-.53 1.15-1.18 1.15H1.18C.53 16 0 15.49 0 14.85V1.15Zm4.94 12.24V6.17h-2.4v7.22h2.4Zm-1.2-8.21c.84 0 1.36-.55 1.36-1.25-.02-.71-.52-1.25-1.34-1.25-.82 0-1.36.54-1.36 1.25 0 .7.52 1.25 1.33 1.25h.01Zm4.91 8.21V9.36c0-.22.02-.43.08-.59.17-.43.57-.88 1.23-.88.87 0 1.22.66 1.22 1.64v3.86h2.4V9.25c0-2.22-1.18-3.25-2.76-3.25-1.28 0-1.85.7-2.17 1.19V6.17h-2.4c.03.68 0 7.22 0 7.22h2.4Z"/>
+                            </svg>
+                        </span>
+                        <span>
+                            <strong>LinkedIn</strong>
+                            <span>linkedin.com/in/mitesh-chakma</span>
+                        </span>
+                        <span class="arrow" aria-hidden="true">&rarr;</span>
+                    </a>
+
+                    <a class="social-link" href="https://github.com/MiteshChakma/" target="_blank" rel="noopener noreferrer">
+                        <span class="icon icon-github" aria-hidden="true">
+                            <svg viewBox="0 0 16 16" focusable="false">
+                                <path d="M8 0C3.58 0 0 3.67 0 8.2c0 3.63 2.29 6.7 5.47 7.78.4.08.55-.18.55-.4 0-.2-.01-.86-.01-1.56-2.01.38-2.53-.5-2.69-.96-.09-.24-.48-.96-.82-1.16-.28-.15-.68-.52-.01-.53.63-.01 1.08.59 1.23.84.72 1.24 1.87.89 2.33.68.07-.53.28-.89.51-1.09-1.78-.21-3.64-.91-3.64-4.04 0-.89.31-1.62.82-2.19-.08-.21-.36-1.04.08-2.16 0 0 .67-.22 2.2.84A7.42 7.42 0 0 1 8 3.97c.68 0 1.36.09 2 .27 1.52-1.06 2.19-.84 2.19-.84.44 1.12.16 1.95.08 2.16.51.57.82 1.3.82 2.19 0 3.14-1.87 3.83-3.65 4.04.29.26.54.76.54 1.53 0 1.1-.01 1.99-.01 2.26 0 .22.15.48.55.4A8.15 8.15 0 0 0 16 8.2C16 3.67 12.42 0 8 0Z"/>
+                            </svg>
+                        </span>
+                        <span>
+                            <strong>GitHub</strong>
+                            <span>github.com/MiteshChakma</span>
+                        </span>
+                        <span class="arrow" aria-hidden="true">&rarr;</span>
+                    </a>
+
+                    <a class="social-link" href="mailto:miteshchakma@gmail.com">
+                        <span class="icon icon-email" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" focusable="false">
+                                <path d="M3.5 5A2.5 2.5 0 0 0 1 7.5v9A2.5 2.5 0 0 0 3.5 19h17a2.5 2.5 0 0 0 2.5-2.5v-9A2.5 2.5 0 0 0 20.5 5h-17Zm0 2h17c.1 0 .2.01.29.04L12 12.63 3.21 7.04c.09-.03.19-.04.29-.04Zm-.5 2.14 8.46 5.38a1 1 0 0 0 1.08 0L21 9.14v7.36a.5.5 0 0 1-.5.5h-17a.5.5 0 0 1-.5-.5V9.14Z"/>
+                            </svg>
+                        </span>
+                        <span>
+                            <strong>Email</strong>
+                            <span>miteshchakma@gmail.com</span>
+                        </span>
+                        <span class="arrow" aria-hidden="true">&rarr;</span>
+                    </a>
+                </div>
+
+                <a class="home" href="https://miteshchakma.github.io/">Back to portfolio</a>
+            </div>
+
+            <aside class="qr-card" aria-label="QR code">
+                <div class="qr-header">
+                    <h2>Scan to connect</h2>
+                    <p>Use this QR code for quick access from a phone during networking, interviews, or events.</p>
+                </div>
+                <div class="qr-frame">
+                    <img src="../assets/qr/qr.jpg" alt="QR code for Mitesh Chakma social links">
+                </div>
+                <div class="meta">
+                    <span>Portfolio: miteshchakma.github.io</span>
+                </div>
+            </aside>
+        </section>
+    </main>
+</body>
+</html>
