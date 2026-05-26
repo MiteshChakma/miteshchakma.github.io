@@ -760,14 +760,24 @@ a:hover { color: var(--indigo); }
 }
 
 /* Resume */
-.resume-wrapper { overflow: hidden; padding: 0; }
+.resume-wrapper {
+    overflow: hidden;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.94);
+}
+.resume-preview-link {
+    display: block;
+    max-width: 860px;
+    margin: 0 auto;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 8px 28px rgba(20, 28, 46, 0.12);
+}
 .resume-preview {
     width: 100%;
-    height: min(72vh, 680px);
-    min-height: 420px;
-    border: 0;
+    height: auto;
     display: block;
-    background: #fff;
 }
 .resume-fallback {
     display: grid;
@@ -782,6 +792,12 @@ a:hover { color: var(--indigo); }
     margin: 0;
     color: var(--text-secondary);
     line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+    .resume-wrapper {
+        padding: 0.5rem;
+    }
 }
 
 /* Contact */
