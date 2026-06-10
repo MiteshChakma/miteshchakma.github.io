@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simple browser-based RAG demo for customer support answers.">
+    <title>Simple RAG Demo | Customer Support Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="app-shell">
+        <section class="intro">
+            <p class="eyebrow">Retrieval Augmented Generation demo</p>
+            <h1>Customer Support RAG Assistant</h1>
+            <p>
+                A simple RAG application that answers customer questions by retrieving information from
+                <strong>policy.json</strong>, then producing a grounded support-style answer.
+            </p>
+        </section>
+
+        <section class="workspace" aria-label="RAG assistant workspace">
+            <article class="assistant-panel">
+                <div class="panel-header">
+                    <div>
+                        <p class="label">Use case</p>
+                        <h2>GreenCart delivery support</h2>
+                    </div>
+                    <span class="status">Offline demo</span>
+                </div>
+                <p id="source-status" class="source-status">Loading knowledge source...</p>
+
+                <form id="question-form" class="question-form">
+                    <label for="question">Ask any question about the GreenCart policy file</label>
+                    <div class="input-row">
+                        <input id="question" name="question" type="text" autocomplete="off" value="Can I get a refund if my groceries arrive late?">
+                        <button type="submit">Ask</button>
+                    </div>
+                </form>
+
+                <div class="quick-questions" aria-label="Example questions">
+                    <button type="button" data-question="Can I get a refund if my groceries arrive late?">Late delivery refund</button>
+                    <button type="button" data-question="Do you deliver frozen food safely?">Frozen food safety</button>
+                    <button type="button" data-question="How can I change my delivery address?">Change address</button>
+                    <button type="button" data-question="How many business days does refund processing take?">Refund timing</button>
+                    <button type="button" data-question="What happens if the driver cannot reach me?">Failed delivery</button>
+                </div>
+
+                <div class="answer-block">
+                    <p class="label">Generated answer</p>
+                    <div id="answer" class="answer" aria-live="polite"></div>
+                </div>
+            </article>
+
+            <aside class="retrieval-panel" aria-label="Retrieved context">
+                <div class="panel-header">
+                    <div>
+                        <p class="label">Retrieved context</p>
+                        <h2>Top matches from policy.json</h2>
+                    </div>
+                </div>
+                <ol id="sources" class="source-list"></ol>
+            </aside>
+        </section>
+
+        <section class="outcome">
+            <h2>Outcome</h2>
+            <div class="outcome-grid">
+                <div>
+                    <strong>Problem</strong>
+                    <p>Support agents need quick, policy-aware answers without searching multiple documents.</p>
+                </div>
+                <div>
+                    <strong>RAG approach</strong>
+                    <p>Retrieve relevant policy snippets first, then generate an answer constrained by those snippets.</p>
+                </div>
+                <div>
+                    <strong>Result</strong>
+                    <p>Faster responses, clearer citations, and less risk of inventing unsupported policy details.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
