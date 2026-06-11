@@ -1,7 +1,21 @@
 {
-  "generated": null,
+  "generated": "2026-06-11T00:00:00Z",
   "username": "MiteshChakma",
-  "source": "placeholder",
-  "readmeRepoCount": 0,
-  "repos": []
+  "source": "curated-static-projects",
+  "readmeRepoCount": 1,
+  "repos": [
+    {
+      "name": "Data_engineering / customer360-data-engineering-demo",
+      "description": "SQLite-based Customer 360 data engineering demo with synthetic CSV data, Python pipeline, SQL transformations, schema validation, pytest coverage, and local churn-model artifacts.",
+      "html_url": "https://github.com/MiteshChakma/Data_engineering/tree/main/customer360-data-engineering-demo",
+      "homepage": "",
+      "language": "Python",
+      "topics": ["data-engineering", "sql", "mlops"],
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2026-06-11T00:00:00Z",
+      "category": "data-engineering",
+      "sort": "20260611"
+    }
+  ]
 }
