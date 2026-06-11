@@ -139,18 +139,55 @@
                     The workflow is deliberately small, but it follows the same mental model as larger data products: source ingestion, quality gates, warehouse loading, transformation, export, and downstream model use.
                 </p>
             </div>
-            <div class="flowchart" aria-label="Customer 360 workflow">
-                <div>Raw CSV sources</div>
-                <span></span>
-                <div>Schema validation</div>
-                <span></span>
-                <div>SQLite load</div>
-                <span></span>
-                <div>SQL aggregation</div>
-                <span></span>
-                <div>Customer 360 CSV</div>
-                <span></span>
-                <div>Local churn model</div>
+            <div class="workflow-map" aria-label="Customer 360 workflow">
+                <article class="workflow-step">
+                    <span class="step-number">01</span>
+                    <div>
+                        <h3>Raw CSV sources</h3>
+                        <p>The project starts with four small synthetic CSV files in <code>data/raw/</code>: customers, orders, web events, and support tickets.</p>
+                        <small>Input: <code>data/raw/*.csv</code></small>
+                    </div>
+                </article>
+                <article class="workflow-step">
+                    <span class="step-number">02</span>
+                    <div>
+                        <h3>Schema validation</h3>
+                        <p>Python checks that each source has the expected columns and usable values before anything is loaded into the database.</p>
+                        <small>File: <code>src/customer360/validation.py</code></small>
+                    </div>
+                </article>
+                <article class="workflow-step">
+                    <span class="step-number">03</span>
+                    <div>
+                        <h3>SQLite load</h3>
+                        <p>Validated pandas DataFrames are written into local SQLite tables so the transformation can be done with plain SQL.</p>
+                        <small>Output: <code>build/customer360.db</code></small>
+                    </div>
+                </article>
+                <article class="workflow-step">
+                    <span class="step-number">04</span>
+                    <div>
+                        <h3>SQL aggregation</h3>
+                        <p>The SQL layer joins customer, order, web, and support data into one row per customer with useful business features.</p>
+                        <small>File: <code>sql/customer_360.sql</code></small>
+                    </div>
+                </article>
+                <article class="workflow-step">
+                    <span class="step-number">05</span>
+                    <div>
+                        <h3>Customer 360 CSV</h3>
+                        <p>The final data product is exported as a CSV that can be opened, reviewed, reused, or shared with another workflow.</p>
+                        <small>Output: <code>build/customer_360.csv</code></small>
+                    </div>
+                </article>
+                <article class="workflow-step">
+                    <span class="step-number">06</span>
+                    <div>
+                        <h3>Local churn model</h3>
+                        <p>A small scikit-learn model uses the Customer 360 output to demonstrate how a data product can feed machine learning.</p>
+                        <small>Outputs: <code>churn_model.joblib</code>, <code>model_metrics.json</code></small>
+                    </div>
+                </article>
             </div>
         </section>
 

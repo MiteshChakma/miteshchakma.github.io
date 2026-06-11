@@ -174,26 +174,65 @@ th { background: #0f766e; color: #fff; font-size: 0.86rem; }
 td { color: var(--muted); }
 td:first-child { color: var(--text); font-weight: 700; }
 
-.flowchart {
+.workflow-map {
     display: grid;
-    grid-template-columns: repeat(6, minmax(120px, 1fr));
-    gap: 0.85rem;
-    align-items: center;
-    margin-top: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.25rem;
+    counter-reset: workflow;
 }
-.flowchart div {
-    min-height: 104px;
+.workflow-step {
+    position: relative;
     display: grid;
-    place-items: center;
-    padding: 1rem;
-    text-align: center;
+    grid-template-columns: 58px 1fr;
+    gap: 1rem;
+    min-height: 178px;
+    padding: 1.25rem;
     border: 1px solid var(--border);
     border-radius: 12px;
-    background: var(--soft-teal);
-    font-weight: 800;
+    background: #ffffff;
+    box-shadow: var(--shadow-soft);
 }
-.flowchart span {
+.workflow-step::after {
+    content: "";
+    position: absolute;
+    right: 1.25rem;
+    bottom: -0.62rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-right: 2px solid #14b8a6;
+    border-bottom: 2px solid #14b8a6;
+    transform: rotate(45deg);
+    background: #ffffff;
+}
+.workflow-step:nth-child(2n)::after,
+.workflow-step:last-child::after {
     display: none;
+}
+.step-number {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #0f766e;
+    color: #ffffff;
+    font-size: 0.88rem;
+    font-weight: 900;
+}
+.workflow-step h3 {
+    margin: 0 0 0.45rem;
+    font-size: 1.05rem;
+}
+.workflow-step p {
+    margin: 0;
+    color: var(--muted);
+}
+.workflow-step small {
+    display: block;
+    margin-top: 0.85rem;
+    color: #0f766e;
+    font-weight: 800;
 }
 
 .stage-layout {
@@ -358,13 +397,18 @@ footer {
 @media (max-width: 900px) {
     .hero-grid, .stage-layout { grid-template-columns: 1fr; }
     .stat-grid, .finding-grid, .assumption-grid { grid-template-columns: repeat(2, 1fr); }
-    .flowchart { grid-template-columns: repeat(2, 1fr); }
+    .workflow-map { grid-template-columns: 1fr; }
+    .workflow-step::after { display: none; }
     .why-what-how { grid-template-columns: 1fr; }
     .code-map { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 620px) {
     .top-nav { justify-content: flex-start; }
-    .stat-grid, .finding-grid, .assumption-grid, .flowchart { grid-template-columns: 1fr; }
+    .stat-grid, .finding-grid, .assumption-grid, .workflow-map { grid-template-columns: 1fr; }
+    .workflow-step {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
     footer { flex-direction: column; }
 }
