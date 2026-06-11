@@ -193,6 +193,47 @@ td:first-child { color: var(--text); font-weight: 700; }
     background: #f8fafc;
 }
 
+.tutorial-guide {
+    display: grid;
+    gap: 1rem;
+}
+
+.guide-step {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #f8fafc;
+    padding: 1rem;
+}
+
+.guide-step h3 {
+    margin-bottom: 0.9rem;
+}
+
+.why-what-how {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.85rem;
+}
+
+.why-what-how div {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    padding: 0.85rem;
+}
+
+.why-what-how h4 {
+    margin: 0 0 0.35rem;
+    color: var(--teal);
+    font-size: 0.9rem;
+}
+
+.why-what-how p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
 pre {
     overflow-x: auto;
     margin: 1rem 0 0;
@@ -232,6 +273,7 @@ footer {
     .hero-grid, .stage-layout { grid-template-columns: 1fr; }
     .stat-grid, .finding-grid { grid-template-columns: repeat(2, 1fr); }
     .flowchart { grid-template-columns: repeat(2, 1fr); }
+    .why-what-how { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 620px) {

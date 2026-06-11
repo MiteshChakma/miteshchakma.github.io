@@ -131,6 +131,9 @@
             <div class="section-copy">
                 <p class="eyebrow">Tutorial</p>
                 <h2>Project stages</h2>
+                <p>
+                    Use the buttons for a quick overview, then read the full beginner-friendly implementation guide below. The full guide explains the reason for each stage, what happens in that stage, how to implement it, and what output to check before moving forward.
+                </p>
             </div>
             <div class="stage-layout">
                 <div class="stage-list" role="tablist" aria-label="Project stages">
@@ -149,10 +152,245 @@
             </div>
         </section>
 
+        <section class="section tutorial-guide" id="implementation-guide">
+            <div class="section-copy">
+                <p class="eyebrow">Beginner guide</p>
+                <h2>How to implement the project from beginning to end</h2>
+                <p>
+                    This guide explains the whole project as if you are rebuilding it yourself. The project is intentionally small, but the same thinking applies to larger pipelines: understand the problem, define source data, validate inputs, transform with SQL, export a data product, train a downstream model, and test the workflow.
+                </p>
+            </div>
+
+            <article class="guide-step">
+                <h3>Stage 0: Understand the business problem</h3>
+                <div class="why-what-how">
+                    <div>
+                        <h4>Why?</h4>
+                        <p>A Customer 360 table gives analysts and downstream systems one trusted row per customer. Without it, customer information stays scattered across orders, web activity, and support systems.</p>
+                    </div>
+                    <div>
+                        <h4>What?</h4>
+                        <p>The project creates a customer-level dataset that answers: who spends the most, who has support issues, who is active on the website, and who may be at churn risk.</p>
+                    </div>
+                    <div>
+                        <h4>How?</h4>
+                        <p>Start with a small problem statement, then list the source files and the final fields you want in the output. In this project, the final output is <code>build/customer_360.csv</code>.</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="guide-step">
+                <h3>Stage 1: Prepare the source data</h3>
+                <div class="why-what-how">
+                    <div>
+                        <h4>Why?</h4>
+                        <p>Every pipeline starts with source data. A novice mistake is writing code before understanding what each column means. Good data engineering starts with knowing the input shape.</p>
+                    </div>
+                    <div>
+                        <h4>What?</h4>
+                        <p>The project uses four synthetic CSV files: <code>customers.csv</code>, <code>orders.csv</code>, <code>web_events.csv</code>, and <code>support_tickets.csv</code>. The data was created by ChatGPT for this portfolio project.</p>
+                    </div>
+                    <div>
+                        <h4>How?</h4>
+                        <p>Place the files under <code>data/raw/</code>. Keep one file per source concept, use a stable key such as <code>customer_id</code>, and document the columns before writing transformations.</p>
+                    </div>
+                </div>
+                <pre><code>customer360-data-engineering-demo/
+  data/raw/customers.csv
+  data/raw/orders.csv
+  data/raw/web_events.csv
+  data/raw/support_tickets.csv</code></pre>
+            </article>
+
+            <article class="guide-step">
+                <h3>Stage 2: Ingest CSV files with Python</h3>
+                <div class="why-what-how">
+                    <div>
+                        <h4>Why?</h4>
+                        <p>Ingestion is the step where raw files enter the pipeline. Keeping ingestion separate from validation and transformation makes the code easier to test and maintain.</p>
+                    </div>
+                    <div>
+                        <h4>What?</h4>
+                        <p>The pipeline reads each CSV into a pandas DataFrame. The file-to-table mapping is defined once so the same names are reused consistently.</p>
+                    </div>
+                    <div>
+                        <h4>How?</h4>
+                        <p>The <code>Customer360Pipeline</code> class reads files from <code>data/raw</code>. If you add a new source file later, you update the source mapping and validation rules.</p>
+                    </div>
+                </div>
+                <pre><code>RAW_TABLES = {
+    "customers": "customers.csv",
+    "orders": "orders.csv",
+    "web_events": "web_events.csv",
+    "support_tickets": "support_tickets.csv",
+}</code></pre>
+            </article>
+
+            <article class="guide-step">
+                <h3>Stage 3: Validate schemas and basic quality</h3>
+                <div class="why-what-how">
+                    <div>
+                        <h4>Why?</h4>
+                        <p>Validation prevents broken or unexpected data from silently producing wrong analytics. If a required column is missing, the pipeline should fail early.</p>
+                    </div>
+                    <div>
+                        <h4>What?</h4>
+                        <p>This project checks that each source table has required columns, order amounts are not negative, and order status values are limited to <code>completed</code> or <code>returned</code>.</p>
+                    </div>
+                    <div>
+                        <h4>How?</h4>
+                        <p>Validation logic lives in <code>src/customer360/validation.py</code>. It raises clear errors when data does not match the expected schema.</p>
+                    </div>
+                </div>
+                <pre><code>validate_raw_sources(frames)
+
+# Example checks:
+# - required columns exist
+# - order_amount is non-negative
+# - status is completed or returned</code></pre>
+            </article>
+
+            <article class="guide-step">
+                <h3>Stage 4: Load raw data into SQLite</h3>
+                <div class="why-what-how">
+                    <div>
+                        <h4>Why?</h4>
+                        <p>SQLite gives the project a real SQL layer without requiring a remote warehouse. It lets a reviewer inspect tables and transformations locally.</p>
+                    </div>
+                    <div>
+                        <h4>What?</h4>
+                        <p>Each DataFrame is written to a SQLite table named after the source: <code>customers</code>, <code>orders</code>, <code>web_events</code>, and <code>support_tickets</code>.</p>
+                    </div>
+                    <div>
+                        <h4>How?</h4>
+                        <p>The pipeline opens <code>build/customer360.db</code> and uses pandas <code>to_sql</code> to replace the raw tables on each run. This keeps local runs repeatable.</p>
+                    </div>
+                </div>
+                <pre><code>with sqlite3.connect("build/customer360.db") as conn:
+    frame.to_sql(table_name, conn, if_exists="replace", index=False)</code></pre>
+            </article>
+
+            <article class="guide-step">
+                <h3>Stage 5: Transform raw tables into Customer 360 SQL features</h3>
+                <div class="why-what-how">
+                    <div>
+                        <h4>Why?</h4>
+                        <p>The main value of the project is the transformation from many activity rows into one useful customer row. This is the heart of Customer 360 data modeling.</p>
+                    </div>
+                    <div>
+                        <h4>What?</h4>
+                        <p>The SQL calculates completed order count, revenue excluding returned orders, return count, web sessions, checkout events, support ticket count, average resolution time, high-priority support flags, and a simple churn label.</p>
+                    </div>
+                    <div>
+                        <h4>How?</h4>
+                        <p>The transformation is written in <code>sql/customer_360.sql</code>. It uses common SQL patterns: grouped feature CTEs, <code>LEFT JOIN</code>, <code>COALESCE</code>, <code>CASE</code>, and aggregation.</p>
+                    </div>
+                </div>
+                <pre><code>CASE
+    WHEN completed_orders &lt;= 1
+      AND checkout_events = 0
+      AND had_high_priority_ticket = 1
+    THEN 1
+    ELSE 0
+END AS churn_label</code></pre>
+            </article>
+
+            <article class="guide-step">
+                <h3>Stage 6: Export the Customer 360 data product</h3>
+                <div class="why-what-how">
+                    <div>
+                        <h4>Why?</h4>
+                        <p>A pipeline should produce a clear artifact. Here, the artifact is a CSV that can be inspected, shared, or used by the model training step.</p>
+                    </div>
+                    <div>
+                        <h4>What?</h4>
+                        <p>The output file <code>build/customer_360.csv</code> contains one row per customer and 15 fields covering profile, revenue, behavior, support, and churn label.</p>
+                    </div>
+                    <div>
+                        <h4>How?</h4>
+                        <p>After the SQL creates the <code>customer_360</code> table, Python reads that table back from SQLite and writes it to CSV.</p>
+                    </div>
+                </div>
+                <pre><code>customer360 = pd.read_sql_query(
+    "SELECT * FROM customer_360 ORDER BY customer_id",
+    conn,
+)
+customer360.to_csv("build/customer_360.csv", index=False)</code></pre>
+            </article>
+
+            <article class="guide-step">
+                <h3>Stage 7: Train a small local model from the output</h3>
+                <div class="why-what-how">
+                    <div>
+                        <h4>Why?</h4>
+                        <p>Many data engineering pipelines feed analytics or machine learning. This step shows that the generated Customer 360 table can be consumed by a downstream ML workflow.</p>
+                    </div>
+                    <div>
+                        <h4>What?</h4>
+                        <p>The training script reads <code>customer_360.csv</code>, prepares categorical and numeric features, trains a small scikit-learn classifier, and writes model artifacts.</p>
+                    </div>
+                    <div>
+                        <h4>How?</h4>
+                        <p>Run the training module after the pipeline build. The output files are <code>build/churn_model.joblib</code> and <code>build/model_metrics.json</code>.</p>
+                    </div>
+                </div>
+                <pre><code>python -m customer360.ml.train \
+  --input build/customer_360.csv \
+  --model-dir build</code></pre>
+            </article>
+
+            <article class="guide-step">
+                <h3>Stage 8: Test the pipeline</h3>
+                <div class="why-what-how">
+                    <div>
+                        <h4>Why?</h4>
+                        <p>Tests prove that the pipeline is repeatable and that important rules do not break silently when code changes.</p>
+                    </div>
+                    <div>
+                        <h4>What?</h4>
+                        <p>The tests check schema validation, end-to-end pipeline output, revenue handling for returned orders, binary churn labels, and model artifact creation.</p>
+                    </div>
+                    <div>
+                        <h4>How?</h4>
+                        <p>Run <code>pytest</code> from the project folder. A successful run means the local pipeline, validation, and model workflow are working together.</p>
+                    </div>
+                </div>
+                <pre><code>pytest -q
+
+# Expected result:
+# 3 passed</code></pre>
+            </article>
+        </section>
+
         <section class="section screenshots" id="outputs">
             <div class="section-copy">
-                <p class="eyebrow">Screenshots</p>
-                <h2>What the project generated locally</h2>
+                <p class="eyebrow">Actual project screenshots</p>
+                <h2>What the project looks like locally</h2>
+                <p>
+                    These screenshots are captured from the actual local project folder and generated output files, not recreated diagrams.
+                </p>
+            </div>
+            <figure>
+                <img src="../../assets/img/customer360/actual-project-folder.png" alt="Actual browser screenshot of the local Customer 360 project folder">
+                <figcaption>Actual project folder served locally, showing source folders, SQL, tests, docs, and generated build output.</figcaption>
+            </figure>
+            <figure>
+                <img src="../../assets/img/customer360/actual-customer360-csv.png" alt="Actual browser screenshot of the generated customer_360.csv file">
+                <figcaption>Actual generated <code>customer_360.csv</code> file with customer-level revenue, activity, support, and churn fields.</figcaption>
+            </figure>
+            <figure>
+                <img src="../../assets/img/customer360/actual-model-metrics.png" alt="Actual browser screenshot of generated model_metrics.json">
+                <figcaption>Actual generated <code>model_metrics.json</code> artifact from the local scikit-learn training step.</figcaption>
+            </figure>
+        </section>
+
+        <section class="section screenshots" id="visual-summary">
+            <div class="section-copy">
+                <p class="eyebrow">Supporting visuals</p>
+                <h2>Readable summary views</h2>
+                <p>
+                    These supporting visuals summarize the same run in a cleaner format for quick scanning.
+                </p>
             </div>
             <figure>
                 <img src="../../assets/img/customer360/pipeline-run.png" alt="Screenshot showing the Customer 360 pipeline run summary">
