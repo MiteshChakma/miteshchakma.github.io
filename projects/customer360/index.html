@@ -139,88 +139,108 @@
                     Read this section like a short tutorial before running the project. Each step shows the decision being made, the file you would look at, the command or output connected to that step, and why the step matters in a real Customer 360 pipeline.
                 </p>
             </div>
+            <div class="workflow-summary" aria-label="Workflow summary">
+                <div>
+                    <span>Input</span>
+                    <strong>4 raw CSV files</strong>
+                </div>
+                <div>
+                    <span>Processing</span>
+                    <strong>Python + SQLite + SQL</strong>
+                </div>
+                <div>
+                    <span>Output</span>
+                    <strong>Customer 360 CSV + model files</strong>
+                </div>
+            </div>
             <div class="workflow-map" aria-label="Customer 360 workflow">
                 <article class="workflow-step">
                     <span class="step-number">01</span>
                     <div>
+                        <span class="workflow-pill">Source discovery</span>
                         <h3>Start by understanding the source data</h3>
                         <p>
                             First, open <code>data/raw/</code>. The project begins with four synthetic CSV files: customers, orders, web events, and support tickets. This mirrors a common business situation where customer information is scattered across different systems.
                         </p>
                         <ul>
-                            <li><strong>Why:</strong> A Customer 360 product only works when we know what each source represents.</li>
-                            <li><strong>Look at:</strong> <code>data/raw/customers.csv</code>, <code>orders.csv</code>, <code>web_events.csv</code>, <code>support_tickets.csv</code>.</li>
-                            <li><strong>Expected result:</strong> You can identify the shared key, <code>customer_id</code>, that connects the files.</li>
+                            <li><strong>Why</strong><span>A Customer 360 product only works when we know what each source represents.</span></li>
+                            <li><strong>Look at</strong><span><code>data/raw/customers.csv</code>, <code>orders.csv</code>, <code>web_events.csv</code>, <code>support_tickets.csv</code>.</span></li>
+                            <li><strong>Expected result</strong><span>You can identify the shared key, <code>customer_id</code>, that connects the files.</span></li>
                         </ul>
                     </div>
                 </article>
                 <article class="workflow-step">
                     <span class="step-number">02</span>
                     <div>
+                        <span class="workflow-pill">Quality gate</span>
                         <h3>Check the data before trusting it</h3>
                         <p>
                             Next, the pipeline validates the CSV files with <code>src/customer360/validation.py</code>. This is a small quality gate: it checks that required columns exist before the pipeline writes anything into SQLite.
                         </p>
                         <ul>
-                            <li><strong>Why:</strong> It is easier to stop early than debug a broken table after loading bad input.</li>
-                            <li><strong>Run through:</strong> <code>python -m customer360.cli build --data-dir data/raw --output-dir build</code>.</li>
-                            <li><strong>Expected result:</strong> If the files match the expected schema, the build continues. If not, the validation error tells you what is missing.</li>
+                            <li><strong>Why</strong><span>It is easier to stop early than debug a broken table after loading bad input.</span></li>
+                            <li><strong>Run through</strong><span><code>python -m customer360.cli build --data-dir data/raw --output-dir build</code>.</span></li>
+                            <li><strong>Expected result</strong><span>If the files match the expected schema, the build continues. If not, the validation error tells you what is missing.</span></li>
                         </ul>
                     </div>
                 </article>
                 <article class="workflow-step">
                     <span class="step-number">03</span>
                     <div>
+                        <span class="workflow-pill">Local warehouse</span>
                         <h3>Load the clean inputs into SQLite</h3>
                         <p>
                             After validation, <code>src/customer360/pipeline.py</code> reads each CSV with pandas and writes the rows into local SQLite tables. SQLite is used here because it keeps the project simple while still letting us practice database-style transformations.
                         </p>
                         <ul>
-                            <li><strong>Why:</strong> Loading the data into tables gives the project a warehouse-like layer without needing cloud setup.</li>
-                            <li><strong>Code path:</strong> <code>Customer360Pipeline.build()</code> creates <code>build/customer360.db</code>.</li>
-                            <li><strong>Expected result:</strong> A local database file appears in the <code>build/</code> folder.</li>
+                            <li><strong>Why</strong><span>Loading the data into tables gives the project a warehouse-like layer without needing cloud setup.</span></li>
+                            <li><strong>Code path</strong><span><code>Customer360Pipeline.build()</code> creates <code>build/customer360.db</code>.</span></li>
+                            <li><strong>Expected result</strong><span>A local database file appears in the <code>build/</code> folder.</span></li>
                         </ul>
                     </div>
                 </article>
                 <article class="workflow-step">
                     <span class="step-number">04</span>
                     <div>
+                        <span class="workflow-pill">Transformation</span>
                         <h3>Use SQL to create one customer view</h3>
                         <p>
                             The SQL in <code>sql/customer_360.sql</code> joins the source tables and calculates customer-level features such as order counts, revenue, web activity, support tickets, and churn-risk signals.
                         </p>
                         <ul>
-                            <li><strong>Why:</strong> SQL is a good fit for joining, grouping, and turning many event rows into one customer record.</li>
-                            <li><strong>Look at:</strong> the <code>WITH</code> blocks and final <code>SELECT</code> in <code>sql/customer_360.sql</code>.</li>
-                            <li><strong>Expected result:</strong> Each customer becomes one enriched row instead of many scattered rows across files.</li>
+                            <li><strong>Why</strong><span>SQL is a good fit for joining, grouping, and turning many event rows into one customer record.</span></li>
+                            <li><strong>Look at</strong><span>The <code>WITH</code> blocks and final <code>SELECT</code> in <code>sql/customer_360.sql</code>.</span></li>
+                            <li><strong>Expected result</strong><span>Each customer becomes one enriched row instead of many scattered rows across files.</span></li>
                         </ul>
                     </div>
                 </article>
                 <article class="workflow-step">
                     <span class="step-number">05</span>
                     <div>
+                        <span class="workflow-pill">Data product</span>
                         <h3>Export the Customer 360 data product</h3>
                         <p>
                             When the SQL transformation finishes, the pipeline exports the final table to <code>build/customer_360.csv</code>. This is the main outcome of the data engineering part of the project.
                         </p>
                         <ul>
-                            <li><strong>Why:</strong> The output should be easy to inspect and easy for another process to reuse.</li>
-                            <li><strong>Open:</strong> <code>build/customer_360.csv</code> after the build command completes.</li>
-                            <li><strong>Expected result:</strong> A clean customer-level dataset with profile, purchase, web, support, and churn-risk fields.</li>
+                            <li><strong>Why</strong><span>The output should be easy to inspect and easy for another process to reuse.</span></li>
+                            <li><strong>Open</strong><span><code>build/customer_360.csv</code> after the build command completes.</span></li>
+                            <li><strong>Expected result</strong><span>A clean customer-level dataset with profile, purchase, web, support, and churn-risk fields.</span></li>
                         </ul>
                     </div>
                 </article>
                 <article class="workflow-step">
                     <span class="step-number">06</span>
                     <div>
+                        <span class="workflow-pill">Downstream ML</span>
                         <h3>Use the output in a small ML workflow</h3>
                         <p>
                             Finally, <code>ml/train.py</code> reads <code>build/customer_360.csv</code> and trains a small local churn model. The model is intentionally simple; its purpose is to show how a reliable data product can support downstream machine-learning work.
                         </p>
                         <ul>
-                            <li><strong>Why:</strong> This connects data engineering output to a practical analytics or ML use case.</li>
-                            <li><strong>Run:</strong> <code>python ml/train.py</code>.</li>
-                            <li><strong>Expected result:</strong> <code>build/churn_model.joblib</code> and <code>build/model_metrics.json</code> are created.</li>
+                            <li><strong>Why</strong><span>This connects data engineering output to a practical analytics or ML use case.</span></li>
+                            <li><strong>Run</strong><span><code>python ml/train.py</code>.</span></li>
+                            <li><strong>Expected result</strong><span><code>build/churn_model.joblib</code> and <code>build/model_metrics.json</code> are created.</span></li>
                         </ul>
                     </div>
                 </article>
