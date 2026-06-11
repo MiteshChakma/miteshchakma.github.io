@@ -118,7 +118,7 @@ h3 { margin: 0 0 0.5rem; font-size: 1.05rem; }
 .section-copy { max-width: 860px; }
 .section-copy p { color: var(--muted); }
 
-.stat-grid, .finding-grid {
+.stat-grid, .finding-grid, .assumption-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
@@ -131,6 +131,27 @@ h3 { margin: 0 0 0.5rem; font-size: 1.05rem; }
 }
 .stat-grid strong { display: block; color: var(--teal); font-size: 1.8rem; }
 .stat-grid span { color: var(--muted); font-size: 0.86rem; }
+
+.assumption-grid {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.assumption-grid article {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #f8fafc;
+    padding: 1rem;
+}
+
+.assumption-grid h3 {
+    margin: 0 0 0.45rem;
+}
+
+.assumption-grid p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+}
 
 .data-table-wrap {
     width: 100%;
@@ -312,7 +333,7 @@ footer {
 
 @media (max-width: 900px) {
     .hero-grid, .stage-layout { grid-template-columns: 1fr; }
-    .stat-grid, .finding-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-grid, .finding-grid, .assumption-grid { grid-template-columns: repeat(2, 1fr); }
     .flowchart { grid-template-columns: repeat(2, 1fr); }
     .why-what-how { grid-template-columns: 1fr; }
     .code-map { grid-template-columns: 1fr; }
@@ -320,6 +341,6 @@ footer {
 
 @media (max-width: 620px) {
     .top-nav { justify-content: flex-start; }
-    .stat-grid, .finding-grid, .flowchart { grid-template-columns: 1fr; }
+    .stat-grid, .finding-grid, .assumption-grid, .flowchart { grid-template-columns: 1fr; }
     footer { flex-direction: column; }
 }

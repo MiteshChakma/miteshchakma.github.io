@@ -104,6 +104,33 @@
             </div>
         </section>
 
+        <section class="section" id="scenario">
+            <div class="section-copy">
+                <p class="eyebrow">Scenario design</p>
+                <h2>How the example maps to a real business problem</h2>
+                <p>
+                    The project simulates a small retail company that wants to understand customers across multiple operational systems. In a real company, customer profile data may come from a CRM, order data from an ecommerce platform, web events from analytics tracking, and support tickets from a helpdesk tool. The purpose of this demo is to model that same situation locally with four small CSV files.
+                </p>
+                <p>
+                    The data was prepared as synthetic sample data with deliberate relationships between tables. Every source uses <code>customer_id</code> as the join key, orders include both completed and returned transactions, web events include checkout behavior, and support tickets include priority and resolution time. These fields were chosen because they are realistic signals for a Customer 360 product.
+                </p>
+            </div>
+            <div class="assumption-grid">
+                <article>
+                    <h3>Data assumptions</h3>
+                    <p>Each customer has one profile row. Orders, web events, and support tickets can contain multiple rows per customer. The project assumes <code>customer_id</code> is stable across all sources.</p>
+                </article>
+                <article>
+                    <h3>Business assumptions</h3>
+                    <p>Completed orders count toward revenue. Returned orders are tracked but excluded from revenue. High-priority support issues and weak checkout behavior are treated as churn-risk signals.</p>
+                </article>
+                <article>
+                    <h3>Engineering assumptions</h3>
+                    <p>The pipeline should be repeatable, local, and easy to inspect. SQLite is used as the warehouse layer because it supports SQL transformations without external setup.</p>
+                </article>
+            </div>
+        </section>
+
         <section class="section" id="workflow">
             <div class="section-copy">
                 <p class="eyebrow">Working flow</p>
@@ -146,8 +173,13 @@
                 </div>
                 <article class="stage-panel" id="stage-panel">
                     <h3>1. Ingest raw CSV data</h3>
-                    <p>The pipeline reads four CSV files from <code>data/raw/</code> using pandas. Each file represents a separate source system.</p>
-                    <pre><code>python -m customer360.cli build --data-dir data/raw --output-dir build</code></pre>
+                    <p>Run <code>src/customer360/cli.py</code> with the build command. The CLI creates <code>Customer360Pipeline</code> from <code>src/customer360/pipeline.py</code>, which reads four synthetic CSV files from <code>data/raw/</code> using pandas.</p>
+                    <pre><code>python -m customer360.cli build --data-dir data/raw --output-dir build
+
+Files used:
+- src/customer360/cli.py
+- src/customer360/pipeline.py
+- data/raw/*.csv</code></pre>
                 </article>
             </div>
         </section>
@@ -227,6 +259,52 @@
             </article>
 
             <article class="guide-step">
+                <h3>Execution checklist: what to run and what to expect</h3>
+                <p class="guide-intro">
+                    Use this table as a progress checklist. If a command does not produce the expected output, stop at that stage and fix the issue before moving to the next one.
+                </p>
+                <div class="data-table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>Step</th><th>Command or action</th><th>File executed</th><th>Expected output</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Inspect data</td>
+                                <td>Open files in <code>data/raw/</code></td>
+                                <td>No script yet</td>
+                                <td>You should see four CSV files with shared <code>customer_id</code> values.</td>
+                            </tr>
+                            <tr>
+                                <td>Build pipeline</td>
+                                <td><code>python -m customer360.cli build --data-dir data/raw --output-dir build</code></td>
+                                <td><code>src/customer360/cli.py</code></td>
+                                <td>Terminal prints <code>Customer 360 rows: 6</code>, plus CSV and database paths.</td>
+                            </tr>
+                            <tr>
+                                <td>Validate export</td>
+                                <td><code>python -m customer360.cli validate --customer360 build/customer_360.csv</code></td>
+                                <td><code>src/customer360/cli.py</code> and <code>validation.py</code></td>
+                                <td>Terminal prints <code>Customer 360 schema validation passed</code>.</td>
+                            </tr>
+                            <tr>
+                                <td>Train model</td>
+                                <td><code>python -m customer360.ml.train --input build/customer_360.csv --model-dir build</code></td>
+                                <td><code>src/customer360/ml/train.py</code></td>
+                                <td>Terminal prints JSON metrics, and <code>build/churn_model.joblib</code> is created.</td>
+                            </tr>
+                            <tr>
+                                <td>Run tests</td>
+                                <td><code>pytest -q</code></td>
+                                <td><code>tests/*.py</code></td>
+                                <td>Terminal prints <code>3 passed</code>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+            <article class="guide-step">
                 <h3>Stage 0: Understand the business problem</h3>
                 <div class="why-what-how">
                     <div>
@@ -269,6 +347,7 @@
                     <p><strong>Files to inspect:</strong> <code>data/raw/customers.csv</code>, <code>orders.csv</code>, <code>web_events.csv</code>, and <code>support_tickets.csv</code>.</p>
                     <p><strong>Implementation reason:</strong> source files stay separate from generated outputs so the pipeline can be rerun from the same raw inputs.</p>
                     <p><strong>Tech used:</strong> CSV files because they are simple, portable, and easy for reviewers to open.</p>
+                    <p><strong>Expected output:</strong> no generated file yet; the checkpoint is that all four CSV files exist and share the <code>customer_id</code> key.</p>
                 </div>
             </article>
 
@@ -297,7 +376,8 @@
                 <div class="stage-details">
                     <p><strong>File to run:</strong> <code>src/customer360/cli.py</code> through <code>python -m customer360.cli build --data-dir data/raw --output-dir build</code>.</p>
                     <p><strong>Code path:</strong> <code>cli.py</code> creates <code>Customer360Pipeline</code>, then <code>pipeline.py</code> calls <code>_read_sources()</code>.</p>
-                    <p><strong>Expected result:</strong> four pandas DataFrames in memory, one for each raw source table.</p>
+                    <p><strong>Reasoning:</strong> the CLI hides implementation details from the user while keeping the pipeline reusable from tests or other Python code.</p>
+                    <p><strong>Expected output:</strong> four pandas DataFrames in memory, one for each raw source table; this step continues automatically into validation during the build command.</p>
                 </div>
             </article>
 
@@ -326,7 +406,8 @@
                 <div class="stage-details">
                     <p><strong>File written for this stage:</strong> <code>src/customer360/validation.py</code>.</p>
                     <p><strong>Design reason:</strong> validation is separated from ingestion so the rules can be tested independently with small DataFrames.</p>
-                    <p><strong>Expected result:</strong> valid data continues into SQLite; invalid data raises a readable <code>ValueError</code>.</p>
+                    <p><strong>File to run:</strong> validation runs automatically during <code>python -m customer360.cli build</code>; after building, run <code>python -m customer360.cli validate --customer360 build/customer_360.csv</code> to check the exported file.</p>
+                    <p><strong>Expected output:</strong> valid data continues into SQLite; invalid data raises a readable <code>ValueError</code>. The standalone validation command prints <code>Customer 360 schema validation passed</code>.</p>
                 </div>
             </article>
 
@@ -351,7 +432,8 @@
                 <div class="stage-details">
                     <p><strong>File written for this stage:</strong> <code>src/customer360/pipeline.py</code>.</p>
                     <p><strong>Why SQLite:</strong> it behaves like a real SQL database but runs locally from one file, which is ideal for a portfolio demo.</p>
-                    <p><strong>Expected result:</strong> <code>build/customer360.db</code> containing raw tables and the final mart table after transformation.</p>
+                    <p><strong>File to run:</strong> this is part of <code>python -m customer360.cli build --data-dir data/raw --output-dir build</code>.</p>
+                    <p><strong>Expected output:</strong> <code>build/customer360.db</code> is created. Inside it, the raw tables are loaded before the final mart table is built.</p>
                 </div>
             </article>
 
@@ -381,7 +463,8 @@ END AS churn_label</code></pre>
                 <div class="stage-details">
                     <p><strong>File written for this stage:</strong> <code>sql/customer_360.sql</code>.</p>
                     <p><strong>Code path:</strong> <code>pipeline.py</code> calls <code>conn.executescript(...)</code> to run the SQL file against SQLite.</p>
-                    <p><strong>Expected result:</strong> a new SQLite table named <code>customer_360</code> with one row per customer.</p>
+                    <p><strong>Reasoning:</strong> SQL keeps aggregation logic readable and close to how a real warehouse mart would be built.</p>
+                    <p><strong>Expected output:</strong> a new SQLite table named <code>customer_360</code> with one row per customer.</p>
                 </div>
             </article>
 
@@ -409,7 +492,8 @@ customer360.to_csv("build/customer_360.csv", index=False)</code></pre>
                 <div class="stage-details">
                     <p><strong>File written for this stage:</strong> <code>src/customer360/pipeline.py</code>.</p>
                     <p><strong>Why export CSV:</strong> it makes the data product visible without special tooling and gives the ML script a simple input.</p>
-                    <p><strong>Expected result:</strong> <code>build/customer_360.csv</code> with 6 rows and 15 columns.</p>
+                    <p><strong>File to run:</strong> <code>python -m customer360.cli build --data-dir data/raw --output-dir build</code>.</p>
+                    <p><strong>Expected output:</strong> terminal prints <code>Customer 360 rows: 6</code>, and <code>build/customer_360.csv</code> contains 6 rows and 15 columns.</p>
                 </div>
             </article>
 
@@ -435,7 +519,8 @@ customer360.to_csv("build/customer_360.csv", index=False)</code></pre>
                 <div class="stage-details">
                     <p><strong>File to run:</strong> <code>src/customer360/ml/train.py</code> through <code>python -m customer360.ml.train --input build/customer_360.csv --model-dir build</code>.</p>
                     <p><strong>Tech used:</strong> scikit-learn <code>ColumnTransformer</code>, <code>OneHotEncoder</code>, <code>RandomForestClassifier</code>, and joblib.</p>
-                    <p><strong>Expected result:</strong> <code>build/churn_model.joblib</code> and <code>build/model_metrics.json</code>.</p>
+                    <p><strong>Reasoning:</strong> the model is intentionally simple because the goal is to demonstrate how a data product feeds ML, not to claim production model quality.</p>
+                    <p><strong>Expected output:</strong> terminal prints <code>{"accuracy": 1.0, "roc_auc": 1.0}</code> for this tiny synthetic dataset, and creates <code>build/churn_model.joblib</code> plus <code>build/model_metrics.json</code>.</p>
                 </div>
             </article>
 
