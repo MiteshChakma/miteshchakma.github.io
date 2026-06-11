@@ -1,0 +1,241 @@
+:root {
+    --bg: #f4f7fb;
+    --panel: #ffffff;
+    --text: #142033;
+    --muted: #536174;
+    --border: #d8e3ee;
+    --teal: #0d9488;
+    --blue: #2563eb;
+    --soft-teal: #eefdfb;
+    --soft-blue: #eef4ff;
+    --shadow: 0 12px 36px rgba(20, 32, 51, 0.08);
+    --font: "Plus Jakarta Sans", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: var(--font);
+    color: var(--text);
+    background:
+        radial-gradient(circle at top left, rgba(13, 148, 136, 0.12), transparent 32rem),
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.11), transparent 28rem),
+        var(--bg);
+    line-height: 1.65;
+}
+
+a { color: var(--teal); font-weight: 700; text-underline-offset: 3px; }
+img { display: block; max-width: 100%; height: auto; }
+code { font-family: Consolas, "Courier New", monospace; }
+
+.page-hero, main, footer {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+}
+
+.page-hero { padding: 1.2rem 0 2rem; }
+
+.top-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+}
+
+.top-nav a {
+    padding: 0.45rem 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.72);
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.86rem;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+    gap: 1.5rem;
+    align-items: stretch;
+}
+
+.eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--teal);
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+h1, h2, h3 { line-height: 1.15; }
+h1 { margin: 0; max-width: 860px; font-size: clamp(2.2rem, 6vw, 4.7rem); letter-spacing: 0; }
+h2 { margin: 0 0 0.75rem; font-size: clamp(1.6rem, 3vw, 2.4rem); }
+h3 { margin: 0 0 0.5rem; font-size: 1.05rem; }
+
+.hero-lead {
+    max-width: 760px;
+    margin: 1rem 0 0;
+    color: var(--muted);
+    font-size: 1.08rem;
+}
+
+.hero-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.5rem; }
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0.65rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+}
+.btn-primary { background: var(--teal); color: #fff; }
+.btn-secondary { background: #fff; border: 1px solid var(--border); color: var(--text); }
+
+.hero-panel, .section, .finding-grid article, .stat-grid div, figure {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.hero-panel { padding: 1.1rem; }
+.hero-panel dl { margin: 0; display: grid; gap: 0.8rem; }
+.hero-panel div { padding: 0.85rem; background: #f8fafc; border-radius: 8px; }
+.hero-panel dt { color: var(--muted); font-size: 0.78rem; font-weight: 700; }
+.hero-panel dd { margin: 0.2rem 0 0; font-weight: 800; }
+
+.section {
+    margin: 1.2rem 0;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    min-width: 0;
+    overflow: hidden;
+}
+
+.section-copy { max-width: 860px; }
+.section-copy p { color: var(--muted); }
+
+.stat-grid, .finding-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1.2rem;
+}
+
+.stat-grid div {
+    padding: 1rem;
+    box-shadow: none;
+}
+.stat-grid strong { display: block; color: var(--teal); font-size: 1.8rem; }
+.stat-grid span { color: var(--muted); font-size: 0.86rem; }
+
+.data-table-wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+table { width: 100%; min-width: 820px; border-collapse: collapse; }
+th, td { padding: 0.85rem; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { background: #0f766e; color: #fff; font-size: 0.86rem; }
+td { color: var(--muted); }
+td:first-child { color: var(--text); font-weight: 700; }
+
+.flowchart {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(120px, 1fr));
+    gap: 0.6rem;
+    align-items: center;
+    margin-top: 1rem;
+}
+.flowchart div {
+    min-height: 84px;
+    display: grid;
+    place-items: center;
+    padding: 0.85rem;
+    text-align: center;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--soft-teal);
+    font-weight: 800;
+}
+.flowchart span {
+    display: none;
+}
+
+.stage-layout {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    gap: 1rem;
+}
+.stage-list { display: grid; gap: 0.5rem; align-content: start; }
+.stage-button {
+    min-height: 44px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--text);
+    font: inherit;
+    font-weight: 800;
+    text-align: left;
+    padding: 0.7rem 0.85rem;
+    cursor: pointer;
+}
+.stage-button.is-active { background: var(--teal); color: #fff; border-color: var(--teal); }
+.stage-panel {
+    min-height: 220px;
+    padding: 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+pre {
+    overflow-x: auto;
+    margin: 1rem 0 0;
+    padding: 1rem;
+    border-radius: 10px;
+    background: #101827;
+    color: #e8eef8;
+    font-size: 0.88rem;
+}
+
+.screenshots {
+    display: grid;
+    gap: 1rem;
+}
+figure {
+    margin: 0;
+    overflow: hidden;
+}
+figcaption {
+    padding: 0.8rem 1rem 1rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.finding-grid { grid-template-columns: repeat(3, 1fr); }
+.finding-grid article { padding: 1rem; box-shadow: none; }
+.finding-grid p { margin: 0; color: var(--muted); }
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 2rem 0 3rem;
+}
+
+@media (max-width: 900px) {
+    .hero-grid, .stage-layout { grid-template-columns: 1fr; }
+    .stat-grid, .finding-grid { grid-template-columns: repeat(2, 1fr); }
+    .flowchart { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 620px) {
+    .top-nav { justify-content: flex-start; }
+    .stat-grid, .finding-grid, .flowchart { grid-template-columns: 1fr; }
+    footer { flex-direction: column; }
+}
