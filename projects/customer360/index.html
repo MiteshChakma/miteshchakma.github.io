@@ -12,36 +12,83 @@
 </head>
 <body>
     <header class="page-hero">
-        <nav class="top-nav" aria-label="Project navigation">
-            <a href="../../index.html#projects">Portfolio</a>
+        <nav class="top-nav" aria-label="Tutorial navigation">
+            <a href="../../index.html#projects">Back to portfolio</a>
+            <a href="#start">Start here</a>
             <a href="#workflow">Workflow</a>
-            <a href="#outputs">Outputs</a>
+            <a href="#tutorial">Walkthrough</a>
+            <a href="#run">Commands</a>
             <a href="https://github.com/MiteshChakma/Data_engineering/tree/main/customer360-data-engineering-demo" target="_blank" rel="noopener noreferrer">GitHub repo</a>
         </nav>
         <div class="hero-grid">
             <div>
-                <p class="eyebrow">Data engineering tutorial project</p>
-                <h1>Customer 360 Data Pipeline with Python, SQL, and SQLite</h1>
+                <p class="eyebrow">Friendly one-page tutorial</p>
+                <h1>Build a Customer 360 data pipeline locally, step by step</h1>
                 <p class="hero-lead">
-                    A local-first project that explains how synthetic retail data moves from raw CSV files into a validated Customer 360 data product, then into a small churn-model workflow.
+                    This page teaches a small data engineering project from the beginning: what the data means, how to install the project, which files to run, how the SQLite pipeline works, and what output to expect.
                 </p>
                 <div class="hero-actions">
-                    <a class="btn btn-primary" href="#tutorial">Read the tutorial</a>
-                    <a class="btn btn-secondary" href="https://github.com/MiteshChakma/Data_engineering/tree/main/customer360-data-engineering-demo" target="_blank" rel="noopener noreferrer">Open GitHub</a>
+                    <a class="btn btn-primary" href="#start">Start the setup</a>
+                    <a class="btn btn-secondary" href="#tutorial">Read the walkthrough</a>
                 </div>
             </div>
-            <div class="hero-panel" aria-label="Project summary">
-                <dl>
-                    <div><dt>Data source</dt><dd>ChatGPT-created synthetic CSV data</dd></div>
-                    <div><dt>Warehouse</dt><dd>Local SQLite database</dd></div>
-                    <div><dt>Output</dt><dd>Customer 360 CSV and model artifacts</dd></div>
-                    <div><dt>Validation</dt><dd>Schema checks and pytest coverage</dd></div>
-                </dl>
+            <div class="hero-panel tutorial-card" aria-label="Tutorial summary">
+                <p class="eyebrow">What you will practice</p>
+                <ol>
+                    <li>Install the local project dependencies.</li>
+                    <li>Read synthetic customer, order, web, and support CSV files.</li>
+                    <li>Validate schemas before loading data.</li>
+                    <li>Build a SQLite-backed Customer 360 output.</li>
+                    <li>Train a small local churn-model workflow.</li>
+                    <li>Run tests to confirm the pipeline still works.</li>
+                </ol>
+                <div class="hero-note">
+                    <strong>Good for:</strong> beginners who want to understand the project one file and one command at a time.
+                </div>
             </div>
         </div>
     </header>
 
     <main>
+        <section class="section start-guide" id="start">
+            <div class="section-copy">
+                <p class="eyebrow">Start here</p>
+                <h2>Install it and run the first build</h2>
+                <p>
+                    If you are new to data engineering projects, begin here. These steps are the simplest path from opening the repository to seeing the first generated output on your machine.
+                </p>
+            </div>
+            <div class="setup-grid">
+                <article>
+                    <span class="setup-step">1</span>
+                    <h3>Open the project folder</h3>
+                    <p>Start inside the project directory so Python can find the source package, data files, SQL file, and tests.</p>
+                    <pre><code>cd customer360-data-engineering-demo</code></pre>
+                </article>
+                <article>
+                    <span class="setup-step">2</span>
+                    <h3>Create the local environment</h3>
+                    <p>The virtual environment keeps this tutorial's packages separate from other Python projects on your computer.</p>
+                    <pre><code>python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt</code></pre>
+                </article>
+                <article>
+                    <span class="setup-step">3</span>
+                    <h3>Build the data product</h3>
+                    <p>This command reads the raw CSV files, validates them, loads SQLite, runs SQL, and exports the Customer 360 CSV.</p>
+                    <pre><code>python -m customer360.cli build --data-dir data/raw --output-dir build</code></pre>
+                </article>
+                <article>
+                    <span class="setup-step">4</span>
+                    <h3>Check the expected result</h3>
+                    <p>After the build, the <code>build/</code> folder should contain the local SQLite database and the final Customer 360 CSV.</p>
+                    <pre><code>build/customer360.db
+build/customer_360.csv</code></pre>
+                </article>
+            </div>
+        </section>
+
         <section class="section" id="why">
             <div class="section-copy">
                 <p class="eyebrow">Why this was made</p>
