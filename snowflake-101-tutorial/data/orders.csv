@@ -1,0 +1,11 @@
+order_id,customer_id,order_date,region,channel,product_category,quantity,unit_price,discount_amount,status
+O1001,C001,2026-01-03,North,web,Electronics,1,329.99,20.00,completed
+O1002,C002,2026-01-04,South,mobile,Home,2,49.50,0.00,completed
+O1003,C001,2026-01-06,North,web,Accessories,3,19.99,5.00,completed
+O1004,C003,2026-01-07,West,store,Electronics,1,199.00,0.00,returned
+O1005,C004,2026-01-09,East,web,Books,4,14.25,4.00,completed
+O1006,C005,2026-01-11,South,mobile,Home,1,89.00,10.00,completed
+O1007,C002,2026-01-14,South,web,Accessories,2,24.99,0.00,completed
+O1008,C006,2026-01-15,West,store,Books,1,32.00,0.00,cancelled
+O1009,C004,2026-01-18,East,mobile,Electronics,1,449.00,35.00,completed
+O1010,C007,2026-01-20,North,web,Home,2,74.50,15.00,completed

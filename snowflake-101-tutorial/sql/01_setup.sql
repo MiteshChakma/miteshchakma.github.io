@@ -1,0 +1,58 @@
+-- Snowflake 101 setup for a small retail analytics tutorial.
+-- Run this first in a Snowflake worksheet.
+
+CREATE DATABASE IF NOT EXISTS RESUME_DEMO_DB;
+CREATE SCHEMA IF NOT EXISTS RESUME_DEMO_DB.RETAIL_ANALYTICS;
+
+USE DATABASE RESUME_DEMO_DB;
+USE SCHEMA RETAIL_ANALYTICS;
+
+CREATE WAREHOUSE IF NOT EXISTS COMPUTE_WH
+    WAREHOUSE_SIZE = XSMALL
+    AUTO_SUSPEND = 60
+    AUTO_RESUME = TRUE
+    INITIALLY_SUSPENDED = TRUE;
+
+USE WAREHOUSE COMPUTE_WH;
+
+CREATE OR REPLACE FILE FORMAT CSV_WITH_HEADER
+    TYPE = CSV
+    SKIP_HEADER = 1
+    FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+    NULL_IF = ('', 'NULL', 'null')
+    TRIM_SPACE = TRUE;
+
+CREATE OR REPLACE STAGE ORDER_STAGE
+    FILE_FORMAT = CSV_WITH_HEADER;
+
+CREATE OR REPLACE TABLE RAW_ORDERS (
+    order_id STRING,
+    customer_id STRING,
+    order_date DATE,
+    region STRING,
+    channel STRING,
+    product_category STRING,
+    quantity NUMBER,
+    unit_price NUMBER(10, 2),
+    discount_amount NUMBER(10, 2),
+    status STRING
+);
+
+CREATE OR REPLACE TABLE ANALYTICS_ORDERS (
+    order_id STRING,
+    customer_id STRING,
+    order_date DATE,
+    region STRING,
+    channel STRING,
+    product_category STRING,
+    quantity NUMBER,
+    unit_price NUMBER(10, 2),
+    gross_revenue NUMBER(12, 2),
+    discount_amount NUMBER(10, 2),
+    net_revenue NUMBER(12, 2),
+    status STRING,
+    is_completed BOOLEAN,
+    is_returned BOOLEAN,
+    discount_rate NUMBER(6, 4),
+    loaded_at TIMESTAMP_NTZ
+);
