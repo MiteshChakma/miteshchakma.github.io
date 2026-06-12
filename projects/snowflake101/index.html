@@ -222,7 +222,7 @@
                     This project can be followed in two ways. The easiest path is using Snowflake's browser UI, Snowsight, where no local installation is needed. The more developer-style path uses SnowSQL to upload the CSV from your machine with a command.
                 </p>
                 <p>
-                    For this portfolio tutorial, the required technology is deliberately small: Snowflake for the warehouse, SQL for transformations and checks, and one CSV file as the source data. I avoided Python, dbt, Airflow, Docker, and external cloud storage here because the goal is to teach Snowflake loading and transformation basics without adding extra infrastructure.
+                    For this portfolio tutorial, the required technology is deliberately small: Snowflake for the warehouse, SQL for transformations and checks, and one CSV file as the source data. I avoided Python, dbt, Airflow, Docker, and external cloud storage here because the goal is to teach Snowflake loading and transformation basics before adding orchestration or production tooling.
                 </p>
             </div>
             <div class="setup-grid">
@@ -239,7 +239,7 @@
                 <article class="setup-card">
                     <h3>Optional</h3>
                     <ul>
-                        <li>SnowSQL, only if you want to upload the CSV using <code>PUT</code>.</li>
+                        <li>SnowSQL, only if you want to upload the CSV from your terminal using <code>PUT</code>. The <code>PUT</code> command is not a normal Snowsight worksheet command.</li>
                         <li>Git, only if you want to clone or version the project locally.</li>
                         <li>A code editor such as VS Code for reading the SQL files.</li>
                         <li>A spreadsheet viewer if you want to inspect <code>orders.csv</code> manually.</li>
@@ -325,7 +325,7 @@
                 <p class="eyebrow">Architecture</p>
                 <h2>How the Snowflake flow works</h2>
                 <p>
-                    The project uses a simple two-layer warehouse pattern. `RAW_ORDERS` receives data loaded from the staged CSV file. `ANALYTICS_ORDERS` is rebuilt from the raw table and contains the cleaned fields used for analysis.
+                    The project uses a simple two-layer warehouse pattern. <code>RAW_ORDERS</code> receives data loaded from the staged CSV file. <code>ANALYTICS_ORDERS</code> is rebuilt from the raw table and contains the cleaned fields used for analysis.
                 </p>
             </div>
             <div class="snowflake-flow" aria-label="Snowflake tutorial architecture flow">
@@ -400,7 +400,7 @@
             <div class="run-list">
                 <article>
                     <h3>Prepare the Snowflake workspace</h3>
-                    <p>Before running project SQL, open Snowsight and choose a role that can create objects. For a beginner trial account, this is often a role such as <code>ACCOUNTADMIN</code> or another role granted database and warehouse privileges.</p>
+                    <p>Before running project SQL, open Snowsight and choose a role that can create objects. In a personal trial account this may be <code>ACCOUNTADMIN</code>. In a shared or work account, a limited learning role with database, schema, warehouse, stage, and table privileges is better.</p>
                     <p><strong>Why it matters:</strong> Snowflake permissions control who can create warehouses, databases, schemas, stages, and tables. If the role is too limited, the setup script will fail before the tutorial begins.</p>
                 </article>
                 <article>
@@ -415,12 +415,12 @@
                 </article>
                 <article>
                     <h3>Upload the CSV into the internal stage</h3>
-                    <p>Upload <code>data/orders.csv</code> to <code>@ORDER_STAGE</code> through Snowsight. If using SnowSQL, run <code>PUT file://data/orders.csv @ORDER_STAGE AUTO_COMPRESS=TRUE;</code> from the project folder.</p>
-                    <p><strong>Why it matters:</strong> stages are the bridge between files and warehouse tables. This project uses an internal stage so a beginner does not need AWS S3, Azure Blob Storage, or Google Cloud Storage.</p>
+                    <p>Upload <code>data/orders.csv</code> to <code>@ORDER_STAGE</code> through Snowsight's data loading flow. If using SnowSQL, run <code>PUT file://data/orders.csv @ORDER_STAGE AUTO_COMPRESS=TRUE;</code> from your terminal in the project folder, not inside a normal worksheet.</p>
+                    <p><strong>Why it matters:</strong> stages are the bridge between files and warehouse tables. This project uses an internal stage so a beginner does not need AWS S3, Azure Blob Storage, or Google Cloud Storage. After upload, run <code>LIST @ORDER_STAGE;</code> if you want to confirm Snowflake can see the file.</p>
                 </article>
                 <article>
                     <h3>Load the raw table with COPY INTO</h3>
-                    <p>Run <code>sql/02_load_raw_orders.sql</code>. The script truncates <code>RAW_ORDERS</code>, loads the staged file, aborts on load errors, and returns a row count.</p>
+                    <p>Run <code>sql/02_load_raw_orders.sql</code>. The script truncates <code>RAW_ORDERS</code>, loads the staged file with <code>COPY INTO</code>, aborts on load errors, and returns a row count.</p>
                     <p><strong>Expected result:</strong> <code>RAW_ORDERS</code> contains 10 rows from the sample CSV.</p>
                 </article>
                 <article>
@@ -453,6 +453,30 @@ END AS net_revenue</code></pre>
                 <div><strong>Completed</strong><span>Counts toward net revenue after discount.</span></div>
                 <div><strong>Returned</strong><span>Remains visible, but net revenue is zero.</span></div>
                 <div><strong>Cancelled</strong><span>Remains visible, but net revenue is zero.</span></div>
+            </div>
+        </section>
+
+        <section class="section" id="troubleshooting">
+            <div class="section-copy">
+                <p class="eyebrow">Beginner checks</p>
+                <h2>What to check if something looks wrong</h2>
+                <p>
+                    The most common mistakes in a first Snowflake loading project are not complex SQL problems. They are usually setup details: the wrong role is selected, the file was not uploaded to the expected stage, the warehouse is not selected, or the staged file name does not match the load pattern.
+                </p>
+            </div>
+            <div class="data-table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Symptom</th><th>Likely cause</th><th>What to run or check</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Setup script fails</td><td>The selected role cannot create objects.</td><td>Use a role with create privileges, or ask for database, schema, warehouse, stage, and table permissions.</td></tr>
+                        <tr><td><code>COPY INTO</code> loads zero rows</td><td>The CSV was not uploaded to <code>@ORDER_STAGE</code>, or the staged file name does not match the pattern.</td><td>Run <code>LIST @ORDER_STAGE;</code> and confirm the file is visible.</td></tr>
+                        <tr><td>Raw row count is not 10</td><td>The stage may contain an extra matching file from a previous attempt.</td><td>Remove old staged files or create a fresh stage, then upload only <code>orders.csv</code>.</td></tr>
+                        <tr><td>Date or numeric values fail to load</td><td>The file format or CSV content does not match the table columns.</td><td>Confirm the CSV has one header row and values like <code>2026-01-03</code>, <code>329.99</code>, and <code>completed</code>.</td></tr>
+                        <tr><td>Revenue looks too high</td><td>Returned or cancelled orders may have been counted as revenue.</td><td>Check the <code>CASE</code> expression in <code>03_transform_orders.sql</code>; only completed orders should contribute to <code>net_revenue</code>.</td></tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -505,12 +529,15 @@ END AS net_revenue</code></pre>
             </div>
         </section>
 
-        <section class="section" id="resume">
+        <section class="section" id="demonstrates">
             <div class="section-copy">
-                <p class="eyebrow">Resume wording</p>
-                <h2>How I would describe it</h2>
+                <p class="eyebrow">Project evidence</p>
+                <h2>What this demonstrates</h2>
                 <p>
-                    Built a Snowflake 101 retail analytics tutorial that stages synthetic ecommerce CSV data, loads it into a raw Snowflake table with <code>COPY INTO</code>, transforms it into an analytics-ready order mart, and validates the output with SQL data quality checks and business summary queries.
+                    This project demonstrates the core warehouse workflow behind many analytics engineering tasks: receiving a source extract, staging it safely, loading a raw table, applying SQL business rules, and validating the final table before using it for reporting.
+                </p>
+                <p>
+                    The most important skill shown is not just writing SQL. It is separating responsibilities: source data remains inspectable in <code>RAW_ORDERS</code>, business logic lives in the transformation step, and quality checks make the output easier to trust.
                 </p>
             </div>
         </section>
@@ -520,19 +547,27 @@ END AS net_revenue</code></pre>
                 <p class="eyebrow">Run order</p>
                 <h2>Files to execute</h2>
             </div>
-            <pre><code>-- 1. Create Snowflake objects
-sql/01_setup.sql
+            <pre><code>-- 0. Choose a Snowflake role with object-creation privileges
 
--- 2. Upload the source file to @ORDER_STAGE
+-- 1. Inspect the source file locally
 data/orders.csv
 
--- 3. Load raw rows
+-- 2. Create Snowflake objects
+sql/01_setup.sql
+
+-- 3. Upload the source file to @ORDER_STAGE
+data/orders.csv
+
+-- Optional upload verification
+LIST @ORDER_STAGE;
+
+-- 4. Load raw rows
 sql/02_load_raw_orders.sql
 
--- 4. Build analytics table
+-- 5. Build analytics table
 sql/03_transform_orders.sql
 
--- 5. Validate and summarize
+-- 6. Validate and summarize
 sql/04_quality_checks.sql</code></pre>
         </section>
     </main>

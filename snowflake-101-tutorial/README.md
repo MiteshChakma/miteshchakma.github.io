@@ -36,7 +36,7 @@ Required:
 
 Optional:
 
-- SnowSQL, only if you want to upload the CSV from your terminal with `PUT`
+- SnowSQL, only if you want to upload the CSV from your terminal with `PUT`. `PUT` is a SnowSQL/client command, not a normal Snowsight worksheet command.
 - Git, only if you want to clone or version the project locally
 - VS Code or another editor for reading SQL files
 - Spreadsheet viewer for manually inspecting the CSV
@@ -151,7 +151,7 @@ Open a Snowflake worksheet and run the SQL files in order.
 
 ### 0. Prepare Snowflake
 
-Open Snowsight and choose a role that can create objects. In a beginner trial account this is often a role such as `ACCOUNTADMIN`, or another role that has been granted permission to create databases, schemas, warehouses, stages, and tables.
+Open Snowsight and choose a role that can create objects. In a personal trial account this may be `ACCOUNTADMIN`. In a shared or work account, a limited learning role with permission to create databases, schemas, warehouses, stages, and tables is better.
 
 This matters because Snowflake permissions are role-based. If your role cannot create objects, `01_setup.sql` will fail before the tutorial starts.
 
@@ -199,13 +199,19 @@ Upload this file into the `ORDER_STAGE` internal stage:
 data/orders.csv
 ```
 
-If using SnowSQL from the project folder, use:
+If using SnowSQL from your terminal in the project folder, use:
 
 ```sql
 PUT file://data/orders.csv @ORDER_STAGE AUTO_COMPRESS=TRUE;
 ```
 
-The Snowsight upload path is easiest for beginners. The SnowSQL `PUT` command is useful if you want a more command-line-oriented workflow.
+The Snowsight upload path is easiest for beginners. The SnowSQL `PUT` command is useful if you want a more command-line-oriented workflow, but it is not something you paste into a normal Snowsight worksheet.
+
+Optional verification after upload:
+
+```sql
+LIST @ORDER_STAGE;
+```
 
 ### 4. Load Raw Data
 
@@ -255,6 +261,18 @@ The checks look for:
 - channel performance
 - top customers by completed revenue
 
+## Beginner Troubleshooting
+
+Common issues and how to reason about them:
+
+| Symptom | Likely cause | What to check |
+| --- | --- | --- |
+| Setup script fails | The selected role cannot create Snowflake objects. | Use a role with create privileges, or ask for database, schema, warehouse, stage, and table permissions. |
+| `COPY INTO` loads zero rows | The file was not uploaded to `@ORDER_STAGE`, or the staged filename does not match the pattern. | Run `LIST @ORDER_STAGE;` and confirm the file is visible. |
+| Raw row count is not 10 | The stage may contain an extra matching file from a previous attempt. | Remove old staged files or create a fresh stage, then upload only `orders.csv`. |
+| Date or numeric values fail to load | The CSV structure does not match the target table or file format. | Confirm the CSV has one header row and values like `2026-01-03`, `329.99`, and `completed`. |
+| Revenue looks too high | Returned or cancelled orders may have been counted as revenue. | Check the `CASE` expression in `03_transform_orders.sql`; only completed orders should contribute to `net_revenue`. |
+
 ## Expected Business Findings
 
 Using the included data:
@@ -277,6 +295,8 @@ Using the included data:
 - Data quality checks
 - Beginner data warehouse documentation
 
-## Resume Summary
+## What This Demonstrates
 
-Built a Snowflake 101 retail analytics tutorial that stages synthetic ecommerce CSV data, loads it into a raw Snowflake table with `COPY INTO`, transforms it into an analytics-ready order mart, and validates the output with SQL data quality checks and business summary queries.
+This project demonstrates the core warehouse workflow behind many analytics engineering tasks: receiving a source extract, staging it safely, loading a raw table, applying SQL business rules, and validating the final table before using it for reporting.
+
+The most important skill shown is not just writing SQL. It is separating responsibilities: source data remains inspectable in `RAW_ORDERS`, business logic lives in the transformation step, and quality checks make the output easier to trust.
