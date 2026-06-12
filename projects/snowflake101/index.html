@@ -122,11 +122,38 @@
             color: var(--muted);
             font-size: 0.9rem;
         }
+        .setup-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .setup-card {
+            padding: 1.1rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fff;
+        }
+        .setup-card h3 {
+            margin: 0 0 0.45rem;
+        }
+        .setup-card ul {
+            margin: 0;
+            padding-left: 1.2rem;
+            color: var(--muted);
+        }
+        .setup-card li {
+            margin-bottom: 0.35rem;
+        }
+        .decision-table td:first-child {
+            min-width: 180px;
+        }
         @media (max-width: 900px) {
             .hero-grid,
             .learning-grid,
             .artifact-grid,
-            .quality-list {
+            .quality-list,
+            .setup-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -137,6 +164,8 @@
         <nav class="top-nav" aria-label="Project navigation">
             <a href="../../index.html#projects">Portfolio</a>
             <a href="#goals">Goals</a>
+            <a href="#setup">Setup</a>
+            <a href="#data-source">Data</a>
             <a href="#architecture">Architecture</a>
             <a href="#tutorial">Tutorial</a>
             <a href="#screenshots">Screenshots</a>
@@ -185,6 +214,58 @@
             </div>
         </section>
 
+        <section class="section" id="setup">
+            <div class="section-copy">
+                <p class="eyebrow">Before starting</p>
+                <h2>Tech stack, tools, and setup needed</h2>
+                <p>
+                    This project can be followed in two ways. The easiest path is using Snowflake's browser UI, Snowsight, where no local installation is needed. The more developer-style path uses SnowSQL to upload the CSV from your machine with a command.
+                </p>
+                <p>
+                    For this portfolio tutorial, the required technology is deliberately small: Snowflake for the warehouse, SQL for transformations and checks, and one CSV file as the source data. I avoided Python, dbt, Airflow, Docker, and external cloud storage here because the goal is to teach Snowflake loading and transformation basics without adding extra infrastructure.
+                </p>
+            </div>
+            <div class="setup-grid">
+                <article class="setup-card">
+                    <h3>Required</h3>
+                    <ul>
+                        <li>A Snowflake account or trial account.</li>
+                        <li>Snowsight access in the browser.</li>
+                        <li>Permission to create a database, schema, warehouse, stage, and tables.</li>
+                        <li>The included <code>data/orders.csv</code> file.</li>
+                        <li>The SQL files in <code>snowflake-101-tutorial/sql/</code>.</li>
+                    </ul>
+                </article>
+                <article class="setup-card">
+                    <h3>Optional</h3>
+                    <ul>
+                        <li>SnowSQL, only if you want to upload the CSV using <code>PUT</code>.</li>
+                        <li>Git, only if you want to clone or version the project locally.</li>
+                        <li>A code editor such as VS Code for reading the SQL files.</li>
+                        <li>A spreadsheet viewer if you want to inspect <code>orders.csv</code> manually.</li>
+                    </ul>
+                </article>
+                <article class="setup-card">
+                    <h3>What does not need to be installed</h3>
+                    <ul>
+                        <li>No Python environment is required to run the Snowflake tutorial.</li>
+                        <li>No local database is required.</li>
+                        <li>No Docker container is required.</li>
+                        <li>No AWS S3, Azure Blob Storage, or Google Cloud Storage bucket is required for this beginner version.</li>
+                    </ul>
+                </article>
+                <article class="setup-card">
+                    <h3>Expected beginner workflow</h3>
+                    <ul>
+                        <li>Open Snowflake in the browser.</li>
+                        <li>Create the warehouse objects with <code>01_setup.sql</code>.</li>
+                        <li>Upload the CSV to the internal stage.</li>
+                        <li>Run the load, transform, and quality-check scripts in order.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
         <section class="section" id="scenario">
             <div class="section-copy">
                 <p class="eyebrow">Business scenario</p>
@@ -212,6 +293,33 @@
             </div>
         </section>
 
+        <section class="section" id="data-source">
+            <div class="section-copy">
+                <p class="eyebrow">Data source</p>
+                <h2>Where the data came from and why it was designed this way</h2>
+                <p>
+                    The dataset is synthetic sample ecommerce data created specifically for this tutorial. It is not copied from a real company, customer system, Kaggle dataset, or private source. I used synthetic data because the project is public on my portfolio and should not expose personal, commercial, or confidential information.
+                </p>
+                <p>
+                    The rows were designed to mimic a realistic order export: each order has a customer, date, region, sales channel, product category, quantity, unit price, discount amount, and status. The file includes completed, returned, and cancelled orders so the SQL transformation has to apply a real business rule instead of simply summing every row.
+                </p>
+            </div>
+            <div class="data-table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Design choice</th><th>Reason</th><th>What it allows the project to show</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Small synthetic CSV</td><td>Safe to publish and easy to inspect.</td><td>Beginner-friendly loading without privacy risk.</td></tr>
+                        <tr><td>Multiple order statuses</td><td>Completed, returned, and cancelled orders behave differently.</td><td>Business rules for revenue calculation.</td></tr>
+                        <tr><td>Multiple regions and channels</td><td>Analytics tables usually support grouped reporting.</td><td>Revenue by region and channel performance queries.</td></tr>
+                        <tr><td>Discount field</td><td>Real revenue often differs from gross order value.</td><td>Gross revenue, net revenue, and discount-rate calculations.</td></tr>
+                        <tr><td>Repeat customers</td><td>Customers can place more than one order.</td><td>Top-customer summaries and future customer-level features.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         <section class="section" id="architecture">
             <div class="section-copy">
                 <p class="eyebrow">Architecture</p>
@@ -226,6 +334,31 @@
                 <div>3. Raw landing table: RAW_ORDERS</div>
                 <div>4. Analytics table: ANALYTICS_ORDERS</div>
                 <div>5. Quality checks and business summaries</div>
+            </div>
+        </section>
+
+        <section class="section" id="why-flow">
+            <div class="section-copy">
+                <p class="eyebrow">Why this flow</p>
+                <h2>Why I used stage -> raw table -> analytics table</h2>
+                <p>
+                    I chose this flow because it mirrors a common warehouse pattern while staying simple enough for a 101 tutorial. Each layer has a different responsibility, so the project is easier to debug, explain, and extend.
+                </p>
+            </div>
+            <div class="data-table-wrap decision-table">
+                <table>
+                    <thead>
+                        <tr><th>Step</th><th>Why it exists</th><th>Problem it solves</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>CSV source file</td><td>Represents an operational extract from an ecommerce system.</td><td>Gives the project a realistic starting point.</td></tr>
+                        <tr><td>Internal stage</td><td>Snowflake loads files from stages, not directly from a local folder in a worksheet.</td><td>Separates file storage from table loading.</td></tr>
+                        <tr><td>File format</td><td>Tells Snowflake how to read headers, quotes, blanks, and CSV structure.</td><td>Prevents parsing mistakes during load.</td></tr>
+                        <tr><td>Raw table</td><td>Keeps a landing copy close to the source file.</td><td>Makes load issues easier to inspect before applying business logic.</td></tr>
+                        <tr><td>Analytics table</td><td>Applies cleaning, normalization, revenue rules, and flags.</td><td>Creates a clean table suitable for dashboards or analysis.</td></tr>
+                        <tr><td>Quality checks</td><td>Tests whether the final table is reasonable before trusting the numbers.</td><td>Catches duplicates, missing IDs, and invalid financial values.</td></tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -266,14 +399,24 @@
             </div>
             <div class="run-list">
                 <article>
+                    <h3>Prepare the Snowflake workspace</h3>
+                    <p>Before running project SQL, open Snowsight and choose a role that can create objects. For a beginner trial account, this is often a role such as <code>ACCOUNTADMIN</code> or another role granted database and warehouse privileges.</p>
+                    <p><strong>Why it matters:</strong> Snowflake permissions control who can create warehouses, databases, schemas, stages, and tables. If the role is too limited, the setup script will fail before the tutorial begins.</p>
+                </article>
+                <article>
                     <h3>Create Snowflake objects</h3>
-                    <p>Run <code>sql/01_setup.sql</code>. This creates the database, schema, warehouse, CSV file format, internal stage, raw table, and analytics table.</p>
+                    <p>Run <code>sql/01_setup.sql</code>. This creates <code>RESUME_DEMO_DB</code>, <code>RETAIL_ANALYTICS</code>, <code>COMPUTE_WH</code>, <code>CSV_WITH_HEADER</code>, <code>ORDER_STAGE</code>, <code>RAW_ORDERS</code>, and <code>ANALYTICS_ORDERS</code>.</p>
                     <p><strong>Why it matters:</strong> Snowflake work starts with clear object organization. Separating database, schema, stage, and tables makes the project easier to operate and explain.</p>
                 </article>
                 <article>
+                    <h3>Inspect the source CSV</h3>
+                    <p>Open <code>data/orders.csv</code> before uploading it. Confirm that it has a header row, 10 order rows, numeric quantity and price fields, and the statuses <code>completed</code>, <code>returned</code>, and <code>cancelled</code>.</p>
+                    <p><strong>Why it matters:</strong> good data work starts before loading. Looking at the source file helps explain why the file format skips one header row and why the transformation needs status-based revenue logic.</p>
+                </article>
+                <article>
                     <h3>Upload the CSV into the internal stage</h3>
-                    <p>Upload <code>data/orders.csv</code> to <code>@ORDER_STAGE</code> through Snowsight, or use <code>PUT file://data/orders.csv @ORDER_STAGE AUTO_COMPRESS=TRUE;</code> with SnowSQL.</p>
-                    <p><strong>Why it matters:</strong> Stages are the bridge between files and warehouse tables. This project keeps that bridge visible instead of hiding it behind a framework.</p>
+                    <p>Upload <code>data/orders.csv</code> to <code>@ORDER_STAGE</code> through Snowsight. If using SnowSQL, run <code>PUT file://data/orders.csv @ORDER_STAGE AUTO_COMPRESS=TRUE;</code> from the project folder.</p>
+                    <p><strong>Why it matters:</strong> stages are the bridge between files and warehouse tables. This project uses an internal stage so a beginner does not need AWS S3, Azure Blob Storage, or Google Cloud Storage.</p>
                 </article>
                 <article>
                     <h3>Load the raw table with COPY INTO</h3>
