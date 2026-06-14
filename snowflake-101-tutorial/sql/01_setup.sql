@@ -37,22 +37,3 @@ CREATE OR REPLACE TABLE RAW_ORDERS (
     discount_amount NUMBER(10, 2),
     status STRING
 );
-
-CREATE OR REPLACE TABLE ANALYTICS_ORDERS (
-    order_id STRING,
-    customer_id STRING,
-    order_date DATE,
-    region STRING,
-    channel STRING,
-    product_category STRING,
-    quantity NUMBER,
-    unit_price NUMBER(10, 2),
-    gross_revenue NUMBER(12, 2),
-    discount_amount NUMBER(10, 2),
-    net_revenue NUMBER(12, 2),
-    status STRING,
-    is_completed BOOLEAN,
-    is_returned BOOLEAN,
-    discount_rate NUMBER(6, 4),
-    loaded_at TIMESTAMP_NTZ
-);

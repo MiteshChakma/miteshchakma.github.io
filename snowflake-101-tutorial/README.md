@@ -147,7 +147,7 @@ The setup script creates:
 
 ## How To Run The Tutorial
 
-Open a Snowflake worksheet and run the SQL files in order.
+Use Snowsight worksheets for the SQL files. Upload the CSV through Snowsight's stage upload screen or through a Snowflake client such as SnowSQL or Snowflake CLI.
 
 ### 0. Prepare Snowflake
 
@@ -179,7 +179,7 @@ This matters because the SQL logic is based on what exists in the source file. F
 -- sql/01_setup.sql
 ```
 
-This creates the database, schema, warehouse, stage, file format, and tables.
+This creates the database, schema, warehouse, CSV file format, internal stage, and raw table.
 
 Objects created:
 
@@ -189,7 +189,9 @@ Objects created:
 - `CSV_WITH_HEADER`
 - `ORDER_STAGE`
 - `RAW_ORDERS`
-- `ANALYTICS_ORDERS`
+- `ANALYTICS_ORDERS` is created later by `03_transform_orders.sql`
+
+Important rerun note: `01_setup.sql` uses `CREATE OR REPLACE STAGE`. Replacing an internal stage removes files already uploaded to that stage. Run setup first, then upload `orders.csv`. If you rerun setup later, upload the CSV again before running the load script.
 
 ### 3. Upload The CSV
 
@@ -220,6 +222,8 @@ LIST @ORDER_STAGE;
 ```
 
 This truncates `RAW_ORDERS`, loads the staged CSV using `COPY INTO`, and returns the raw row count.
+
+The script uses `FORCE = TRUE` so the tutorial can be rerun with the same staged file. Without this, Snowflake's load history can skip a file that was already loaded in an earlier run.
 
 Expected row count:
 
@@ -268,8 +272,8 @@ Common issues and how to reason about them:
 | Symptom | Likely cause | What to check |
 | --- | --- | --- |
 | Setup script fails | The selected role cannot create Snowflake objects. | Use a role with create privileges, or ask for database, schema, warehouse, stage, and table permissions. |
-| `COPY INTO` loads zero rows | The file was not uploaded to `@ORDER_STAGE`, or the staged filename does not match the pattern. | Run `LIST @ORDER_STAGE;` and confirm the file is visible. |
-| Raw row count is not 10 | The stage may contain an extra matching file from a previous attempt. | Remove old staged files or create a fresh stage, then upload only `orders.csv`. |
+| `COPY INTO` loads zero rows | The file was not uploaded to `@ORDER_STAGE`, the staged filename does not match the pattern, or `FORCE = TRUE` was removed after an earlier load. | Run `LIST @ORDER_STAGE;` and confirm the file is visible. Keep `FORCE = TRUE` for repeatable tutorial runs. |
+| Raw row count is more than 10 | The stage may contain extra matching files from previous attempts. | Remove old staged files or create a fresh stage, then upload only `orders.csv`. |
 | Date or numeric values fail to load | The CSV structure does not match the target table or file format. | Confirm the CSV has one header row and values like `2026-01-03`, `329.99`, and `completed`. |
 | Revenue looks too high | Returned or cancelled orders may have been counted as revenue. | Check the `CASE` expression in `03_transform_orders.sql`; only completed orders should contribute to `net_revenue`. |
 

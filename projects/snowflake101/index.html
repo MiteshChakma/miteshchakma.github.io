@@ -176,7 +176,7 @@
                 <p class="eyebrow">Snowflake 101 tutorial project</p>
                 <h1>Retail Analytics Pipeline with Snowflake SQL</h1>
                 <p class="hero-lead">
-                    A beginner-friendly data warehouse project that stages a CSV order extract, loads it into a raw Snowflake table, transforms it into a clean analytics order mart, and validates the result with SQL quality checks.
+                    A beginner-friendly data warehouse project that stages a CSV order extract, loads it into a raw Snowflake table, creates a clean analytics order mart, and validates the result with SQL quality checks.
                 </p>
                 <div class="hero-actions">
                     <a class="btn btn-primary" href="#tutorial">Read the tutorial</a>
@@ -188,7 +188,7 @@
                     <div><dt>Project type</dt><dd>Snowflake 101 warehouse tutorial</dd></div>
                     <div><dt>Source data</dt><dd>Synthetic ecommerce orders CSV</dd></div>
                     <div><dt>Core tools</dt><dd>Snowflake SQL, internal stage, COPY INTO</dd></div>
-                    <div><dt>Final output</dt><dd>Analytics-ready order mart and quality checks</dd></div>
+                    <div><dt>Final output</dt><dd>Analytics order mart created by SQL transformation</dd></div>
                 </dl>
             </div>
         </div>
@@ -258,7 +258,7 @@
                     <h3>Expected beginner workflow</h3>
                     <ul>
                         <li>Open Snowflake in the browser.</li>
-                        <li>Create the warehouse objects with <code>01_setup.sql</code>.</li>
+                        <li>Create the database, schema, warehouse, file format, stage, and raw table with <code>01_setup.sql</code>.</li>
                         <li>Upload the CSV to the internal stage.</li>
                         <li>Run the load, transform, and quality-check scripts in order.</li>
                     </ul>
@@ -325,7 +325,7 @@
                 <p class="eyebrow">Architecture</p>
                 <h2>How the Snowflake flow works</h2>
                 <p>
-                    The project uses a simple two-layer warehouse pattern. <code>RAW_ORDERS</code> receives data loaded from the staged CSV file. <code>ANALYTICS_ORDERS</code> is rebuilt from the raw table and contains the cleaned fields used for analysis.
+                    The project uses a simple two-layer warehouse pattern. <code>RAW_ORDERS</code> receives data loaded from the staged CSV file. <code>ANALYTICS_ORDERS</code> is created by the transformation script from the raw table and contains the cleaned fields used for analysis.
                 </p>
             </div>
             <div class="snowflake-flow" aria-label="Snowflake tutorial architecture flow">
@@ -405,8 +405,8 @@
                 </article>
                 <article>
                     <h3>Create Snowflake objects</h3>
-                    <p>Run <code>sql/01_setup.sql</code>. This creates <code>RESUME_DEMO_DB</code>, <code>RETAIL_ANALYTICS</code>, <code>COMPUTE_WH</code>, <code>CSV_WITH_HEADER</code>, <code>ORDER_STAGE</code>, <code>RAW_ORDERS</code>, and <code>ANALYTICS_ORDERS</code>.</p>
-                    <p><strong>Why it matters:</strong> Snowflake work starts with clear object organization. Separating database, schema, stage, and tables makes the project easier to operate and explain.</p>
+                    <p>Run <code>sql/01_setup.sql</code>. This creates <code>RESUME_DEMO_DB</code>, <code>RETAIL_ANALYTICS</code>, <code>COMPUTE_WH</code>, <code>CSV_WITH_HEADER</code>, <code>ORDER_STAGE</code>, and <code>RAW_ORDERS</code>. The analytics table is created later by <code>03_transform_orders.sql</code>.</p>
+                    <p><strong>Why it matters:</strong> Snowflake work starts with clear object organization. Separating database, schema, stage, and tables makes the project easier to operate and explain. Run setup before uploading the CSV; if you rerun setup later, upload the CSV again because replacing an internal stage removes files stored in that stage.</p>
                 </article>
                 <article>
                     <h3>Inspect the source CSV</h3>
@@ -420,7 +420,7 @@
                 </article>
                 <article>
                     <h3>Load the raw table with COPY INTO</h3>
-                    <p>Run <code>sql/02_load_raw_orders.sql</code>. The script truncates <code>RAW_ORDERS</code>, loads the staged file with <code>COPY INTO</code>, aborts on load errors, and returns a row count.</p>
+                    <p>Run <code>sql/02_load_raw_orders.sql</code>. The script truncates <code>RAW_ORDERS</code>, loads the staged file with <code>COPY INTO</code>, aborts on load errors, forces a reload of the staged file for repeatable tutorial runs, and returns a row count.</p>
                     <p><strong>Expected result:</strong> <code>RAW_ORDERS</code> contains 10 rows from the sample CSV.</p>
                 </article>
                 <article>
@@ -471,8 +471,8 @@ END AS net_revenue</code></pre>
                     </thead>
                     <tbody>
                         <tr><td>Setup script fails</td><td>The selected role cannot create objects.</td><td>Use a role with create privileges, or ask for database, schema, warehouse, stage, and table permissions.</td></tr>
-                        <tr><td><code>COPY INTO</code> loads zero rows</td><td>The CSV was not uploaded to <code>@ORDER_STAGE</code>, or the staged file name does not match the pattern.</td><td>Run <code>LIST @ORDER_STAGE;</code> and confirm the file is visible.</td></tr>
-                        <tr><td>Raw row count is not 10</td><td>The stage may contain an extra matching file from a previous attempt.</td><td>Remove old staged files or create a fresh stage, then upload only <code>orders.csv</code>.</td></tr>
+                        <tr><td><code>COPY INTO</code> loads zero rows</td><td>The CSV was not uploaded to <code>@ORDER_STAGE</code>, the staged file name does not match the pattern, or <code>FORCE = TRUE</code> was removed after an earlier load.</td><td>Run <code>LIST @ORDER_STAGE;</code> and confirm the file is visible. Keep <code>FORCE = TRUE</code> for repeatable tutorial runs.</td></tr>
+                        <tr><td>Raw row count is more than 10</td><td>The stage may contain extra matching files from previous attempts.</td><td>Remove old staged files or create a fresh stage, then upload only <code>orders.csv</code>.</td></tr>
                         <tr><td>Date or numeric values fail to load</td><td>The file format or CSV content does not match the table columns.</td><td>Confirm the CSV has one header row and values like <code>2026-01-03</code>, <code>329.99</code>, and <code>completed</code>.</td></tr>
                         <tr><td>Revenue looks too high</td><td>Returned or cancelled orders may have been counted as revenue.</td><td>Check the <code>CASE</code> expression in <code>03_transform_orders.sql</code>; only completed orders should contribute to <code>net_revenue</code>.</td></tr>
                     </tbody>
