@@ -7,7 +7,7 @@
     {
       "name": "databricks-retail-pipeline",
       "description": "Beginner Databricks retail data pipeline with CLI setup, Asset Bundles, PySpark transformations, Delta table outputs, SQL checks, and screenshot-based documentation.",
-      "html_url": "databricks-retail-pipeline/",
+      "html_url": "https://github.com/MiteshChakma/Data_engineering/tree/main/databricks-retail-pipeline",
       "homepage": "projects/databricks-retail-pipeline/",
       "language": "Python",
       "topics": ["databricks", "pyspark", "delta-lake"],
@@ -20,7 +20,7 @@
     {
       "name": "customer360-data-engineering-demo",
       "description": "Customer 360 data pipeline with Python, SQL, validation tests, Snowflake migration SQL, and a SageMaker-style churn training workflow.",
-      "html_url": "customer360-data-engineering-demo/",
+      "html_url": "https://github.com/MiteshChakma/Data_engineering/tree/main/customer360-data-engineering-demo",
       "homepage": "",
       "language": "Python",
       "topics": ["data-engineering", "sql", "mlops"],
