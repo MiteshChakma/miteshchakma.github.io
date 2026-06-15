@@ -1,0 +1,38 @@
+bundle:
+  name: databricks-retail-pipeline
+
+variables:
+  source_path:
+    description: Path to the retail orders CSV in a Unity Catalog volume or DBFS.
+    default: /Volumes/main/default/demo/retail_orders.csv
+  catalog_name:
+    description: Target catalog for Delta tables.
+    default: main
+  schema_name:
+    description: Target schema for Delta tables.
+    default: default
+
+resources:
+  jobs:
+    retail_orders_pipeline:
+      name: retail-orders-pipeline
+      tasks:
+        - task_key: transform_retail_orders
+          notebook_task:
+            notebook_path: ./notebooks/retail_orders_pipeline.py
+            source: WORKSPACE
+            base_parameters:
+              source_path: ${var.source_path}
+              catalog_name: ${var.catalog_name}
+              schema_name: ${var.schema_name}
+          new_cluster:
+            spark_version: 15.4.x-scala2.12
+            node_type_id: Standard_DS3_v2
+            num_workers: 1
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      root_path: ~/.bundle/${bundle.name}/${bundle.target}
